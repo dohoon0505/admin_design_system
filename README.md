@@ -1,7 +1,7 @@
 # Console · Admin Design System
 
 **PC 어드민을 위한 독립 디자인 시스템** — 깔끔하고, 밀도 높고, 일관된 콘솔.
-`v1.0.0` · 46 컴포넌트 · 3-tier 토큰 · 8색 프로필 × Light/Dark · WCAG 2.2 AA
+`v1.1.0` · 46 컴포넌트 · 3-tier 토큰 · 8색 프로필 × Light/Dark · WCAG 2.2 AA · Toss-inspired 리프레시
 
 빌드가 필요 없는 **정적 사이트**입니다 (vanilla HTML/CSS/JS). `index.html`을 열면 전 컴포넌트를 라이브로 확인할 수 있고, GitHub Pages로 그대로 배포됩니다.
 
@@ -25,7 +25,7 @@ npx serve .
 컴포넌트 CSS는 특정 색(indigo 등)을 **절대 직접 참조하지 않습니다.** 오직 `--sys-accent-*`만 씁니다. 밝기는 `data-theme`, 강조색은 `data-accent`로 **직교(orthogonal)** 제어되므로, 속성 두 개만 바꾸면 컴포넌트 수정 없이 8색 × 2모드가 나옵니다.
 
 ```html
-<html data-theme="light" data-accent="indigo">   <!-- 기본 -->
+<html data-theme="light" data-accent="blue">     <!-- 기본 (토스 블루) -->
 <html data-theme="dark"  data-accent="blue">     <!-- 다크 + 블루 -->
 ```
 

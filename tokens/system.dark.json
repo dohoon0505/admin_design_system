@@ -1,51 +1,51 @@
 {
   "$description": "Console ADS — semantic tokens (--sys-*), Dark theme overrides. Applied via [data-theme=\"dark\"]. Same token names as Light, different values (principle 02: one surface, two themes). Shadows also darken.",
-  "$version": "1.0.0",
+  "$version": "1.1.0",
   "$theme": "dark",
   "background": {
-    "canvas": "#0F1116",
-    "surface": "#181B22",
-    "raised": "#23272F",
-    "sunken": "#0A0B0E",
-    "hover": "#1E222B",
-    "overlay": "rgba(0,0,0,0.62)"
+    "canvas": "#12161B",
+    "surface": "#191F28",
+    "raised": "#252A32",
+    "sunken": "#0A0D11",
+    "hover": "#232A33",
+    "overlay": "rgba(0,0,0,0.60)"
   },
   "content": {
-    "primary": "#F3F5F8",
-    "secondary": "#B4BAC7",
-    "tertiary": "#868D9E",
-    "disabled": "#454B59",
-    "inverse": "#181B22",
-    "accent": "#9DA6F7",
-    "on-accent": "#0F1116"
+    "primary": "#F2F4F6",
+    "secondary": "#B0B8C1",
+    "tertiary": "#8B95A1",
+    "disabled": "#4E5968",
+    "inverse": "#191F28",
+    "accent": "#7BAEF8",
+    "on-accent": "#12161B"
   },
   "border": {
-    "subtle": "#23272F",
-    "default": "#2E333E",
-    "strong": "#727A8A",
-    "focus": "#7681F1"
+    "subtle": "#252A32",
+    "default": "#333D4B",
+    "strong": "#4E5968",
+    "focus": "#4E92F7"
   },
   "accent": {
-    "solid": "#7681F1",
-    "hover": "#9DA6F7",
-    "active": "#C4CAFB",
-    "subtle": "#1E2150",
-    "muted": "#393EAB",
-    "content": "#9DA6F7",
-    "on-solid": "#0F1116"
+    "solid": "#4E92F7",
+    "hover": "#7BAEF8",
+    "active": "#A9CBFB",
+    "subtle": "#12233D",
+    "muted": "#1957B8",
+    "content": "#7BAEF8",
+    "on-solid": "#12161B"
   },
   "status": {
-    "success": "#2DBE6E", "success-subtle": "#10281C", "success-content": "#54D890",
-    "warning": "#F6B44B", "warning-subtle": "#33240A", "warning-content": "#F6B44B",
-    "danger":  "#F26B6F", "danger-subtle":  "#3A1A1B", "danger-content":  "#F58A8D",
-    "info":    "#5389F0", "info-subtle":    "#14284B", "info-content":    "#7FA8F6"
+    "success": "#20C997", "success-subtle": "#0C2A22", "success-content": "#38D9A9",
+    "warning": "#FCC419", "warning-subtle": "#332811", "warning-content": "#FFD43B",
+    "danger":  "#FF6B6B", "danger-subtle":  "#341A1E", "danger-content":  "#FF8787",
+    "info":    "#4DABF7", "info-subtle":    "#12233D", "info-content":    "#74C0FC"
   },
   "shadow": {
-    "xs": "0 1px 2px rgba(0,0,0,0.5)",
-    "sm": "0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.5)",
-    "md": "0 2px 6px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.55)",
-    "lg": "0 8px 20px rgba(0,0,0,0.55), 0 20px 40px rgba(0,0,0,0.6)",
-    "xl": "0 28px 64px rgba(0,0,0,0.65)"
+    "xs": "0 1px 2px rgba(0,0,0,0.4)",
+    "sm": "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)",
+    "md": "0 4px 14px rgba(0,0,0,0.45), 0 2px 4px rgba(0,0,0,0.35)",
+    "lg": "0 10px 28px rgba(0,0,0,0.5), 0 4px 10px rgba(0,0,0,0.4)",
+    "xl": "0 20px 56px rgba(0,0,0,0.6), 0 8px 20px rgba(0,0,0,0.45)"
   },
-  "viz": { "grid": "#23272F", "axis": "#868D9E" }
+  "viz": { "grid": "#252A32", "axis": "#8B95A1" }
 }

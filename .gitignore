@@ -10,3 +10,7 @@ desktop.ini
 node_modules/
 npm-debug.log*
 *.log
+
+# Test/QA artifacts (Playwright screenshots, MCP output)
+.playwright-mcp/
+/[0-9]*.png

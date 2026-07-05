@@ -1,48 +1,48 @@
 {
-  "$description": "Console ADS — semantic tokens (--sys-*), Light theme. This is :root. UI references THESE, never --ref-*. Accent slots hold the default (indigo) profile; profiles.json remaps them per [data-accent].",
-  "$version": "1.0.0",
+  "$description": "Console ADS — semantic tokens (--sys-*), Light theme. This is :root. UI references THESE, never --ref-*. Accent slots hold the default (blue) profile; profiles.json remaps them per [data-accent].",
+  "$version": "1.1.0",
   "$theme": "light",
   "background": {
-    "canvas": "#F7F8FA",
+    "canvas": "#F9FAFB",
     "surface": "#FFFFFF",
     "raised": "#FFFFFF",
-    "sunken": "#EEF0F4",
-    "hover": "#EEF0F4",
-    "overlay": "rgba(15,17,22,0.55)"
+    "sunken": "#F2F4F6",
+    "hover": "#F2F4F6",
+    "overlay": "rgba(25,31,40,0.52)"
   },
   "content": {
-    "primary": "#181B22",
-    "secondary": "#5F6676",
-    "tertiary": "#6E7688",
-    "disabled": "#AEB4C2",
+    "primary": "#191F28",
+    "secondary": "#4E5968",
+    "tertiary": "#8B95A1",
+    "disabled": "#B0B8C1",
     "inverse": "#FFFFFF",
-    "accent": "#393EAB",
+    "accent": "#1B64DA",
     "on-accent": "#FFFFFF"
   },
   "border": {
-    "subtle": "#EEF0F4",
-    "default": "#E2E5EB",
-    "strong": "#868D9E",
-    "focus": "#4A4FD1"
+    "subtle": "#F2F4F6",
+    "default": "#E5E8EB",
+    "strong": "#D1D6DB",
+    "focus": "#3182F6"
   },
   "accent": {
-    "solid": "#4A4FD1",
-    "hover": "#393EAB",
-    "active": "#2D3186",
-    "subtle": "#EEF0FE",
-    "muted": "#C4CAFB",
-    "content": "#393EAB",
+    "solid": "#3182F6",
+    "hover": "#2272EB",
+    "active": "#1B64DA",
+    "subtle": "#EBF3FE",
+    "muted": "#A9CBFB",
+    "content": "#1B64DA",
     "on-solid": "#FFFFFF"
   },
   "status": {
-    "success": "#0F7D45", "success-subtle": "#E7F7EE", "success-content": "#0F7D45",
-    "warning": "#E8930C", "warning-subtle": "#FEF4E6", "warning-content": "#96560A",
-    "danger":  "#D22C31", "danger-subtle":  "#FDECEC", "danger-content":  "#C0282D",
-    "info":    "#2E6FE8", "info-subtle":    "#EAF2FE", "info-content":    "#184EB0"
+    "success": "#12B886", "success-subtle": "#E6F9F0", "success-content": "#0A7C5A",
+    "warning": "#F59F00", "warning-subtle": "#FFF7E6", "warning-content": "#A16207",
+    "danger":  "#E03131", "danger-subtle":  "#FFECEC", "danger-content":  "#C92A2A",
+    "info":    "#3182F6", "info-subtle":    "#EBF3FE", "info-content":    "#1B64DA"
   },
   "viz": {
-    "1": "#4A4FD1", "2": "#0E8074", "3": "#E8930C", "4": "#7A3BD6",
-    "5": "#2E6FE8", "6": "#12A150", "7": "#E5484D", "8": "#5F6676",
-    "grid": "#EEF0F4", "axis": "#6E7688"
+    "1": "#3182F6", "2": "#12B886", "3": "#F59F00", "4": "#845EF7",
+    "5": "#4DABF7", "6": "#20C997", "7": "#FF6B6B", "8": "#868E96",
+    "grid": "#F2F4F6", "axis": "#8B95A1"
   }
 }
