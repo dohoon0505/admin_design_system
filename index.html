@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" data-accent="indigo" data-density="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Console · Admin Design System</title>
+<meta name="description" content="PC 어드민을 위한 독립 디자인 시스템 — 46 컴포넌트 · 3-tier 토큰 · 5색 프로필 × Light/Dark · WCAG 2.2 AA.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234A4FD1'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@2.304/web/jetbrains-mono.css">
+<link rel="stylesheet" href="assets/css/foundation.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<style>
+/* === Demo-catalog chrome (NOT part of the system). Token-referenced only. === */
+.demo-skip{position:absolute;left:var(--space-300);top:-40px;z-index:var(--z-toast);padding:var(--space-200) var(--space-400);border-radius:var(--radius-md);background:var(--sys-accent-solid);color:var(--sys-accent-on-solid);transition:top var(--duration-fast)}
+.demo-skip:focus{top:var(--space-300)}
+.demo-topbar{position:sticky;top:0;z-index:var(--z-sticky);display:flex;align-items:center;gap:var(--space-500);flex-wrap:wrap;height:auto;min-height:var(--layout-topbar-height);padding:var(--space-300) var(--layout-content-pad);background:var(--sys-background-surface);border-bottom:1px solid var(--sys-border-default)}
+.demo-brand{display:flex;align-items:center;gap:var(--space-250,10px);font:var(--text-heading-sm);color:var(--sys-content-primary)}
+.demo-brand .mark{display:grid;place-items:center;width:28px;height:28px;border-radius:var(--radius-sm);background:var(--sys-accent-solid);color:var(--sys-accent-on-solid);font:var(--text-label-md)}
+.demo-brand small{font:var(--text-caption);color:var(--sys-content-tertiary);font-weight:500}
+.demo-switchers{margin-left:auto;display:flex;align-items:center;gap:var(--space-500);flex-wrap:wrap}
+.demo-switch{display:flex;align-items:center;gap:var(--space-200)}
+.demo-switch>.lbl{font:var(--text-overline);letter-spacing:.06em;text-transform:uppercase;color:var(--sys-content-tertiary)}
+.seg{display:inline-flex;padding:2px;background:var(--sys-background-sunken);border-radius:var(--radius-md)}
+.seg button{height:28px;padding:0 var(--space-300);border:none;background:none;border-radius:var(--radius-sm);color:var(--sys-content-secondary);font:var(--text-label-sm);cursor:pointer}
+.seg button:hover{color:var(--sys-content-primary)}
+.seg button[aria-pressed="true"]{background:var(--sys-background-surface);color:var(--sys-content-primary);box-shadow:var(--shadow-xs)}
+.seg button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.accent-picker{display:inline-flex;gap:var(--space-150)}
+.accent-picker button{width:26px;height:26px;padding:0;border:2px solid transparent;border-radius:var(--radius-pill);background:none;cursor:pointer}
+.accent-picker button .dot{display:block;width:100%;height:100%;border-radius:var(--radius-pill);box-shadow:inset 0 0 0 1px var(--sys-border-default)}
+.accent-picker button[aria-pressed="true"]{border-color:var(--sys-content-primary)}
+.accent-picker button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.dot-indigo{background:var(--ref-indigo-600)}.dot-blue{background:var(--ref-blue-600)}.dot-teal{background:var(--ref-teal-600)}.dot-violet{background:var(--ref-violet-600)}.dot-neutral{background:var(--ref-neutral-800)}
+
+.demo-layout{display:grid;grid-template-columns:248px 1fr;max-width:var(--layout-content-max);margin:0 auto}
+.demo-toc{position:sticky;top:calc(var(--layout-topbar-height) + var(--space-300));align-self:start;max-height:calc(100vh - var(--layout-topbar-height) - var(--space-600));overflow:auto;padding:var(--space-600) var(--space-400);display:flex;flex-direction:column;gap:var(--space-100)}
+.demo-toc .grp{font:var(--text-overline);letter-spacing:.06em;text-transform:uppercase;color:var(--sys-content-tertiary);padding:var(--space-400) var(--space-300) var(--space-150)}
+.demo-toc a{padding:var(--space-150) var(--space-300);border-radius:var(--radius-md);color:var(--sys-content-secondary);font:var(--text-body-sm);text-decoration:none}
+.demo-toc a:hover{background:var(--sys-background-hover);color:var(--sys-content-primary);text-decoration:none}
+.demo-main{min-width:0;padding:var(--space-700) var(--space-800) var(--space-1200)}
+.demo-hero{margin-bottom:var(--space-900)}
+.demo-hero h1{font:var(--text-display);color:var(--sys-content-primary);margin:0 0 var(--space-300)}
+.demo-hero .sub{font:var(--text-body-lg);color:var(--sys-content-secondary);max-width:64ch}
+.demo-hero .facts{display:flex;flex-wrap:wrap;gap:var(--space-200);margin-top:var(--space-500)}
+.demo-section{margin:var(--space-1100) 0 0;scroll-margin-top:calc(var(--layout-topbar-height) + var(--space-500))}
+.demo-section>.eyebrow{display:flex;align-items:center;gap:var(--space-300);font:var(--text-heading-lg);color:var(--sys-content-primary);padding-bottom:var(--space-400);border-bottom:1px solid var(--sys-border-default);margin-bottom:var(--space-600)}
+.demo-section>.eyebrow .n{font:var(--text-label-sm);color:var(--sys-content-tertiary);font-variant-numeric:tabular-nums}
+.spec{padding:var(--space-600) 0;border-bottom:1px solid var(--sys-border-subtle);scroll-margin-top:calc(var(--layout-topbar-height) + var(--space-500))}
+.spec-head{display:flex;align-items:baseline;gap:var(--space-300);margin-bottom:var(--space-200)}
+.spec-num{font:var(--text-label-sm);color:var(--sys-accent-content);font-variant-numeric:tabular-nums;background:var(--sys-accent-subtle);padding:2px var(--space-200);border-radius:var(--radius-sm)}
+.spec-name{font:var(--text-heading-sm);color:var(--sys-content-primary);margin:0}
+.spec-name .ko{font:var(--text-body-sm);color:var(--sys-content-tertiary);font-weight:400;margin-left:var(--space-200)}
+.spec-purpose{font:var(--text-body-sm);color:var(--sys-content-secondary);margin:0 0 var(--space-300);max-width:76ch}
+.spec-meta{display:flex;flex-wrap:wrap;gap:var(--space-150);margin-bottom:var(--space-400);font:var(--text-caption);color:var(--sys-content-tertiary)}
+.spec-meta code{font:var(--text-code);background:var(--sys-background-sunken);color:var(--sys-content-secondary);padding:1px var(--space-150);border-radius:var(--radius-xs)}
+.spec-demo{padding:var(--space-600);background:var(--sys-background-canvas);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg)}
+.demo-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-400)}
+.demo-col{display:flex;flex-direction:column;gap:var(--space-400)}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--space-400)}
+.state-tag{font:var(--text-overline);letter-spacing:.06em;text-transform:uppercase;color:var(--sys-content-tertiary);margin-bottom:var(--space-150)}
+.demo-cell{display:flex;flex-direction:column}
+.tabular{font-variant-numeric:tabular-nums}
+/* spinner shown on a solid accent surface (loading button): token-only, theme-aware */
+.spin-on-accent{border-color:var(--sys-accent-hover);border-top-color:var(--sys-accent-on-solid)}
+
+/* foundation preview */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-300)}
+.sw{border:1px solid var(--sys-border-default);border-radius:var(--radius-md);overflow:hidden;background:var(--sys-background-surface)}
+.sw .chip{height:52px}
+.sw .cap{padding:var(--space-200) var(--space-250,10px)}
+.sw .cap b{display:block;font:var(--text-label-sm);color:var(--sys-content-primary)}
+.sw .cap span{font:var(--text-code);color:var(--sys-content-tertiary)}
+.type-row{display:flex;align-items:baseline;gap:var(--space-400);padding:var(--space-200) 0;border-bottom:1px solid var(--sys-border-subtle)}
+.type-row .k{flex:0 0 132px;font:var(--text-code);color:var(--sys-content-tertiary)}
+.space-row{display:flex;align-items:center;gap:var(--space-400);padding:var(--space-150) 0}
+.space-row .k{flex:0 0 132px;font:var(--text-code);color:var(--sys-content-tertiary)}
+.space-row .bar{height:16px;background:var(--sys-accent-muted);border-radius:var(--radius-xs)}
+.radius-demo{display:flex;flex-wrap:wrap;gap:var(--space-400)}
+.radius-demo .box{width:76px;height:76px;display:grid;place-items:end center;padding-bottom:var(--space-150);background:var(--sys-accent-subtle);border:1px solid var(--sys-accent-muted);color:var(--sys-accent-content);font:var(--text-code)}
+.shadow-demo{display:flex;flex-wrap:wrap;gap:var(--space-600)}
+.shadow-demo .box{width:120px;height:76px;display:grid;place-items:center;background:var(--sys-background-surface);border-radius:var(--radius-lg);color:var(--sys-content-tertiary);font:var(--text-code)}
+
+@media (max-width:960px){.demo-layout{grid-template-columns:1fr}.demo-toc{display:none}.demo-main{padding:var(--space-600) var(--space-400) var(--space-1100)}}
+</style>
+</head>
+<body>
+<a class="demo-skip" href="#main">본문으로 건너뛰기</a>
+
+<!-- ============ Top switcher (theme · accent · density) ============ -->
+<header class="demo-topbar">
+  <div class="demo-brand">
+    <span class="mark">C</span>
+    <span>Console <small>Admin Design System · v1.0.0</small></span>
+  </div>
+  <div class="demo-switchers">
+    <div class="demo-switch">
+      <span class="lbl">Theme</span>
+      <div class="seg" role="group" aria-label="테마">
+        <button type="button" data-ads-theme="light">Light</button>
+        <button type="button" data-ads-theme="dark">Dark</button>
+      </div>
+    </div>
+    <div class="demo-switch">
+      <span class="lbl">Accent</span>
+      <div class="accent-picker" role="group" aria-label="강조색 프로필">
+        <button type="button" data-ads-accent="indigo" aria-label="Indigo"><span class="dot dot-indigo"></span></button>
+        <button type="button" data-ads-accent="blue" aria-label="Blue"><span class="dot dot-blue"></span></button>
+        <button type="button" data-ads-accent="teal" aria-label="Teal"><span class="dot dot-teal"></span></button>
+        <button type="button" data-ads-accent="violet" aria-label="Violet"><span class="dot dot-violet"></span></button>
+        <button type="button" data-ads-accent="neutral" aria-label="Neutral"><span class="dot dot-neutral"></span></button>
+      </div>
+    </div>
+    <div class="demo-switch">
+      <span class="lbl">Density</span>
+      <div class="seg" role="group" aria-label="밀도">
+        <button type="button" data-ads-density="default">Default</button>
+        <button type="button" data-ads-density="compact">Compact</button>
+      </div>
+    </div>
+    <button class="ads-btn ads-btn-secondary ads-btn-sm" data-ads-open="ads-cmdk">명령 검색 <kbd class="ads-kbd" style="position:static">⌘K</kbd></button>
+  </div>
+</header>
+
+<div class="demo-layout">
+<!-- ============ Table of contents ============ -->
+<nav class="demo-toc" aria-label="목차">
+  <a href="#foundation">Foundation</a>
+  <p class="grp">레이아웃 · 내비</p>
+  <a href="#c-01">01 App Shell</a><a href="#c-02">02 Sidebar</a><a href="#c-03">03 Topbar</a><a href="#c-04">04 Breadcrumb</a><a href="#c-05">05 Page Header</a><a href="#c-06">06 Tabs</a><a href="#c-07">07 Pagination</a><a href="#c-08">08 Command Palette</a>
+  <p class="grp">폼 · 입력</p>
+  <a href="#c-09">09 Button</a><a href="#c-10">10 Text Field</a><a href="#c-11">11 Textarea</a><a href="#c-12">12 Select</a><a href="#c-13">13 Combobox</a><a href="#c-14">14 Date Picker</a><a href="#c-15">15 Checkbox</a><a href="#c-16">16 Radio</a><a href="#c-17">17 Switch</a><a href="#c-18">18 File Upload</a><a href="#c-19">19 Form Field</a><a href="#c-20">20 Slider</a>
+  <p class="grp">데이터 표시</p>
+  <a href="#c-21">21 Data Table</a><a href="#c-22">22 Card</a><a href="#c-23">23 Stat / KPI</a><a href="#c-24">24 Badge</a><a href="#c-25">25 Tag / Chip</a><a href="#c-26">26 Avatar</a><a href="#c-27">27 Description List</a><a href="#c-28">28 Tooltip</a><a href="#c-29">29 Charts</a><a href="#c-30">30 List</a><a href="#c-31">31 Tree</a><a href="#c-32">32 Filter Bar</a>
+  <p class="grp">피드백 · 오버레이</p>
+  <a href="#c-33">33 Modal</a><a href="#c-34">34 Drawer</a><a href="#c-35">35 Toast</a><a href="#c-36">36 Alert</a><a href="#c-37">37 Dropdown Menu</a><a href="#c-38">38 Progress</a><a href="#c-39">39 Skeleton</a><a href="#c-40">40 Empty State</a><a href="#c-41">41 Popover</a><a href="#c-42">42 Error State</a>
+  <p class="grp">유틸 · 어드민</p>
+  <a href="#c-43">43 Divider</a><a href="#c-44">44 Search Field</a><a href="#c-45">45 Permission Matrix</a><a href="#c-46">46 Timeline</a>
+</nav>
+
+<main class="demo-main" id="main">
+  <section class="demo-hero">
+    <h1>Console</h1>
+    <p class="sub">PC 어드민을 위한 독립 디자인 시스템. 깔끔하고, 밀도 높고, 일관된 콘솔. 이 페이지는 46개 컴포넌트를 라이브로 보여주는 카탈로그입니다 — 상단에서 <strong>테마</strong>·<strong>강조색</strong>·<strong>밀도</strong>를 바꿔 5색 × Light/Dark 10조합을 눈으로 검증하세요.</p>
+    <div class="facts">
+      <span class="ads-badge ads-badge-accent">46 컴포넌트</span>
+      <span class="ads-badge ads-badge-neutral">3-tier 토큰</span>
+      <span class="ads-badge ads-badge-neutral">5색 × Light/Dark</span>
+      <span class="ads-badge ads-badge-success">WCAG 2.2 AA</span>
+      <span class="ads-badge ads-badge-neutral">Vanilla HTML/CSS/JS</span>
+    </div>
+  </section>
+
+  <!-- ============ FOUNDATION PREVIEW ============ -->
+  <section class="demo-section" id="foundation">
+    <h2 class="eyebrow">Foundation · 토큰</h2>
+
+    <div class="spec">
+      <div class="spec-head"><span class="spec-num">F1</span><h3 class="spec-name">Semantic Color <span class="ko">시맨틱 컬러 (--sys-*)</span></h3></div>
+      <p class="spec-purpose">UI는 언제나 시맨틱 토큰을 참조합니다. 아래 스와치는 현재 테마·강조색에 따라 실시간으로 값이 바뀝니다.</p>
+      <div class="spec-demo">
+        <div class="swatches">
+          <div class="sw"><div class="chip" style="background:var(--sys-background-canvas)"></div><div class="cap"><b>background</b><span>canvas</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-background-surface)"></div><div class="cap"><b>background</b><span>surface</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-background-sunken)"></div><div class="cap"><b>background</b><span>sunken</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-content-primary)"></div><div class="cap"><b>content</b><span>primary</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-content-secondary)"></div><div class="cap"><b>content</b><span>secondary</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-border-default)"></div><div class="cap"><b>border</b><span>default</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-accent-solid)"></div><div class="cap"><b>accent</b><span>solid</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-accent-subtle)"></div><div class="cap"><b>accent</b><span>subtle</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-status-success)"></div><div class="cap"><b>status</b><span>success</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-status-warning)"></div><div class="cap"><b>status</b><span>warning</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-status-danger)"></div><div class="cap"><b>status</b><span>danger</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--sys-status-info)"></div><div class="cap"><b>status</b><span>info</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><span class="spec-num">F2</span><h3 class="spec-name">Typography <span class="ko">타이포 스케일</span></h3></div>
+      <p class="spec-purpose">Pretendard 1벌 + JetBrains Mono. 굵기는 400·600·700로 절제. 본문 기본 14px, 하한 12px.</p>
+      <div class="spec-demo">
+        <div class="type-row"><span class="k">display</span><span style="font:var(--text-display);color:var(--sys-content-primary)">읽기 쉬운 콘솔</span></div>
+        <div class="type-row"><span class="k">heading-xl</span><span style="font:var(--text-heading-xl);color:var(--sys-content-primary)">회원 관리 대시보드</span></div>
+        <div class="type-row"><span class="k">heading-md</span><span style="font:var(--text-heading-md);color:var(--sys-content-primary)">섹션 제목</span></div>
+        <div class="type-row"><span class="k">body-md</span><span style="font:var(--text-body-md);color:var(--sys-content-primary)">본문 기본 — 가입 회원을 조회하고 상태를 변경합니다.</span></div>
+        <div class="type-row"><span class="k">label-md</span><span style="font:var(--text-label-md);color:var(--sys-content-secondary)">라벨 텍스트</span></div>
+        <div class="type-row"><span class="k">caption</span><span style="font:var(--text-caption);color:var(--sys-content-tertiary)">캡션 (12px 하한)</span></div>
+        <div class="type-row"><span class="k">code</span><span style="font:var(--text-code);color:var(--sys-content-secondary)">--sys-accent-solid</span></div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><span class="spec-num">F3</span><h3 class="spec-name">Spacing · Radius · Shadow <span class="ko">간격 · 반경 · 그림자</span></h3></div>
+      <p class="spec-purpose">간격은 4px 그리드(--space-*). 반경은 버튼 md·카드 lg로 통일. 그림자는 얕게 5단계.</p>
+      <div class="spec-demo demo-col">
+        <div>
+          <div class="state-tag">Spacing — 4px grid</div>
+          <div class="space-row"><span class="k">space-200 · 8</span><span class="bar" style="width:8px"></span></div>
+          <div class="space-row"><span class="k">space-400 · 16</span><span class="bar" style="width:16px"></span></div>
+          <div class="space-row"><span class="k">space-600 · 24</span><span class="bar" style="width:24px"></span></div>
+          <div class="space-row"><span class="k">space-800 · 40</span><span class="bar" style="width:40px"></span></div>
+          <div class="space-row"><span class="k">space-1000 · 64</span><span class="bar" style="width:64px"></span></div>
+        </div>
+        <div>
+          <div class="state-tag">Radius</div>
+          <div class="radius-demo">
+            <div class="box" style="border-radius:var(--radius-sm)">sm</div>
+            <div class="box" style="border-radius:var(--radius-md)">md</div>
+            <div class="box" style="border-radius:var(--radius-lg)">lg</div>
+            <div class="box" style="border-radius:var(--radius-xl)">xl</div>
+            <div class="box" style="border-radius:var(--radius-pill)">pill</div>
+          </div>
+        </div>
+        <div>
+          <div class="state-tag">Shadow</div>
+          <div class="shadow-demo">
+            <div class="box" style="box-shadow:var(--shadow-xs)">xs</div>
+            <div class="box" style="box-shadow:var(--shadow-sm)">sm</div>
+            <div class="box" style="box-shadow:var(--shadow-md)">md</div>
+            <div class="box" style="box-shadow:var(--shadow-lg)">lg</div>
+            <div class="box" style="box-shadow:var(--shadow-xl)">xl</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GROUP 1 · LAYOUT & NAVIGATION ============ -->
+  <section class="demo-section" id="grp-layout">
+    <h2 class="eyebrow"><span class="n">01–08</span> 레이아웃 · 내비게이션</h2>
+
+    <article class="spec" id="c-01">
+      <div class="spec-head"><span class="spec-num">01</span><h3 class="spec-name">App Shell <span class="ko">레이아웃 셸</span></h3></div>
+      <p class="spec-purpose">모든 어드민 페이지의 뼈대. 고정 사이드바 + 상단바 + 스크롤되는 콘텐츠 영역.</p>
+      <div class="spec-meta"><span>변형: sidebar-fixed · collapsed · with-right-panel</span></div>
+      <div class="spec-demo" style="padding:0">
+        <div class="ads-shell" style="min-height:280px;border-radius:var(--radius-lg);overflow:hidden">
+          <aside class="ads-sidebar">
+            <nav class="ads-nav" aria-label="주요">
+              <p class="ads-nav-group">운영</p>
+              <a class="ads-nav-item is-active" href="#" aria-current="page">대시보드</a>
+              <a class="ads-nav-item" href="#">주문</a>
+              <a class="ads-nav-item" href="#">회원</a>
+            </nav>
+          </aside>
+          <header class="ads-topbar"><div class="ads-topbar-inner"><strong>대시보드</strong><div class="ads-topbar-right"><button class="ads-icon-btn" aria-label="알림">◔</button></div></div></header>
+          <main class="ads-content"><div class="ads-content-inner"><p class="spec-purpose" style="margin:0">콘텐츠 영역 — 프레임은 고정되고 이 영역만 스크롤됩니다.</p></div></main>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-02">
+      <div class="spec-head"><span class="spec-num">02</span><h3 class="spec-name">Sidebar Navigation <span class="ko">사이드바 내비게이션</span></h3></div>
+      <p class="spec-purpose">1차 내비게이션. 섹션으로 그룹핑, 현재 위치를 accent-subtle 배경 + accent 텍스트로 표시.</p>
+      <div class="spec-meta"><span>변형: flat · grouped · nested · collapsed</span></div>
+      <div class="spec-demo">
+        <nav class="ads-nav" aria-label="예시" style="max-width:260px;background:var(--sys-background-surface);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg)">
+          <p class="ads-nav-group">운영</p>
+          <a class="ads-nav-item is-active" href="#" aria-current="page">대시보드</a>
+          <a class="ads-nav-item" href="#">주문</a>
+          <a class="ads-nav-item" href="#">회원</a>
+          <p class="ads-nav-group">설정</p>
+          <a class="ads-nav-item" href="#">권한</a>
+          <a class="ads-nav-item" href="#">환경설정</a>
+        </nav>
+      </div>
+    </article>
+
+    <article class="spec" id="c-03">
+      <div class="spec-head"><span class="spec-num">03</span><h3 class="spec-name">Topbar <span class="ko">상단 바</span></h3></div>
+      <p class="spec-purpose">콘텍스트·전역 액션의 자리. 좌측 제목/브레드크럼, 우측 검색·알림·테마·프로필. 우측 액션은 4개 이하.</p>
+      <div class="spec-demo" style="padding:0">
+        <header class="ads-topbar" style="border:1px solid var(--sys-border-default);border-radius:var(--radius-lg)"><div class="ads-topbar-inner">
+          <button class="ads-icon-btn" aria-label="사이드바 토글">≡</button>
+          <nav class="ads-breadcrumb" aria-label="breadcrumb"><a href="#c-03">홈</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">회원</span></nav>
+          <div class="ads-topbar-right">
+            <button class="ads-icon-btn" aria-label="검색">⌕</button>
+            <button class="ads-icon-btn" aria-label="알림">◔</button>
+            <button class="ads-icon-btn" aria-label="테마 전환" data-ads-theme="dark">☾</button>
+            <button class="ads-avatar-btn" aria-haspopup="menu" aria-label="프로필"><span class="ads-avatar ads-avatar-sm">KD</span></button>
+          </div>
+        </div></header>
+      </div>
+    </article>
+
+    <article class="spec" id="c-04">
+      <div class="spec-head"><span class="spec-num">04</span><h3 class="spec-name">Breadcrumb <span class="ko">브레드크럼</span></h3></div>
+      <p class="spec-purpose">현재 페이지의 계층 위치. 마지막 항목은 링크가 아닌 텍스트(aria-current).</p>
+      <div class="spec-demo">
+        <nav class="ads-breadcrumb" aria-label="breadcrumb">
+          <a href="#c-04">홈</a><span class="sep" aria-hidden="true">/</span>
+          <a href="#c-04">회원</a><span class="sep" aria-hidden="true">/</span>
+          <span aria-current="page">상세</span>
+        </nav>
+      </div>
+    </article>
+
+    <article class="spec" id="c-05">
+      <div class="spec-head"><span class="spec-num">05</span><h3 class="spec-name">Page Header <span class="ko">페이지 헤더</span></h3></div>
+      <p class="spec-purpose">콘텐츠 최상단의 제목 블록. 제목 + 설명 + 우측 액션(2차 → 1차). 1차 액션은 우측 끝 1개.</p>
+      <div class="spec-demo">
+        <div class="ads-page-header" style="margin:0">
+          <div>
+            <h1 class="ads-page-title">회원 관리</h1>
+            <p class="ads-page-desc">가입 회원을 조회하고 상태를 변경합니다.</p>
+          </div>
+          <div class="ads-page-actions">
+            <button class="ads-btn ads-btn-secondary">내보내기</button>
+            <button class="ads-btn ads-btn-primary">회원 추가</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-06">
+      <div class="spec-head"><span class="spec-num">06</span><h3 class="spec-name">Tabs <span class="ko">탭</span></h3></div>
+      <p class="spec-purpose">같은 맥락의 뷰 전환. 밑줄형 + 카운트 배지. 클릭해 활성 탭을 바꿔보세요.</p>
+      <div class="spec-meta"><span>변형: underline · segmented · with-count</span></div>
+      <div class="spec-demo">
+        <div class="ads-tabs" role="tablist">
+          <button class="ads-tab is-active" role="tab" aria-selected="true">전체 <span class="ads-tab-count">128</span></button>
+          <button class="ads-tab" role="tab" aria-selected="false">활성 <span class="ads-tab-count">112</span></button>
+          <button class="ads-tab" role="tab" aria-selected="false">정지</button>
+          <button class="ads-tab" role="tab" aria-selected="false" disabled style="opacity:.5;cursor:not-allowed">보관</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-07">
+      <div class="spec-head"><span class="spec-num">07</span><h3 class="spec-name">Pagination <span class="ko">페이지네이션</span></h3></div>
+      <p class="spec-purpose">범위 요약 + 페이지 번호 + 이전/다음. 현재 페이지는 accent-subtle, 숫자는 tabular-nums.</p>
+      <div class="spec-demo">
+        <nav class="ads-pagination" aria-label="pagination">
+          <span class="ads-page-summary">1–20 / 128</span>
+          <button class="ads-page-btn" aria-label="이전" disabled>‹</button>
+          <button class="ads-page-btn is-current" aria-current="page">1</button>
+          <button class="ads-page-btn">2</button>
+          <button class="ads-page-btn">3</button>
+          <button class="ads-page-btn">4</button>
+          <button class="ads-page-btn" aria-label="다음">›</button>
+        </nav>
+      </div>
+    </article>
+
+    <article class="spec" id="c-08">
+      <div class="spec-head"><span class="spec-num">08</span><h3 class="spec-name">Command Palette <span class="ko">커맨드 팔레트</span></h3></div>
+      <p class="spec-purpose">⌘/Ctrl+K 로 어디서든 열어 명령·페이지를 검색해 즉시 실행. 키보드만으로 완결.</p>
+      <div class="spec-meta"><span>변형: commands · navigation · search · with-recent · grouped</span></div>
+      <div class="spec-demo demo-row">
+        <button class="ads-btn ads-btn-primary" data-ads-open="ads-cmdk">커맨드 팔레트 열기 <kbd class="ads-kbd" style="position:static">⌘K</kbd></button>
+        <span class="spec-purpose" style="margin:0">전역 단축키 ⌘K / Ctrl+K 도 동작합니다.</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ GROUP 2 · FORMS & INPUT ============ -->
+  <section class="demo-section" id="grp-forms">
+    <h2 class="eyebrow"><span class="n">09–20</span> 폼 · 입력</h2>
+
+    <article class="spec" id="c-09">
+      <div class="spec-head"><span class="spec-num">09</span><h3 class="spec-name">Button <span class="ko">버튼</span></h3></div>
+      <p class="spec-purpose">액션의 기본 단위. 위계(1차/2차/ghost/danger) + 크기. 한 화면의 1차 버튼은 하나.</p>
+      <div class="spec-meta"><span>상태: rest · hover · active · focus · disabled · loading</span> <span>크기: sm · md · lg</span></div>
+      <div class="spec-demo demo-col">
+        <div class="demo-cell"><div class="state-tag">Variants</div><div class="demo-row">
+          <button class="ads-btn ads-btn-primary">저장</button>
+          <button class="ads-btn ads-btn-secondary">취소</button>
+          <button class="ads-btn ads-btn-ghost">더보기</button>
+          <button class="ads-btn ads-btn-danger">삭제</button>
+        </div></div>
+        <div class="demo-cell"><div class="state-tag">Sizes</div><div class="demo-row">
+          <button class="ads-btn ads-btn-primary ads-btn-sm">Small</button>
+          <button class="ads-btn ads-btn-primary">Medium</button>
+          <button class="ads-btn ads-btn-primary ads-btn-lg">Large</button>
+        </div></div>
+        <div class="demo-cell"><div class="state-tag">States</div><div class="demo-row">
+          <button class="ads-btn ads-btn-primary" disabled>Disabled</button>
+          <button class="ads-btn ads-btn-primary" aria-busy="true" disabled><span class="ads-spinner spin-on-accent"></span> 저장 중</button>
+          <button class="ads-btn ads-btn-secondary">Focus 확인(Tab)</button>
+        </div></div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-10">
+      <div class="spec-head"><span class="spec-num">10</span><h3 class="spec-name">Text Field <span class="ko">인풋</span></h3></div>
+      <p class="spec-purpose">한 줄 텍스트 입력. 라벨은 항상 표시(placeholder 대체 금지). 에러는 색 + 문구 + aria-invalid.</p>
+      <div class="spec-demo demo-grid">
+        <div class="ads-field">
+          <label class="ads-label" for="d-email">이메일</label>
+          <input class="ads-input" id="d-email" type="email" placeholder="name@company.com">
+          <p class="ads-help">회사 이메일을 입력하세요.</p>
+        </div>
+        <div class="ads-field is-error">
+          <label class="ads-label" for="d-pw">비밀번호</label>
+          <input class="ads-input is-error" id="d-pw" type="password" value="123" aria-invalid="true" aria-describedby="d-pw-e">
+          <p class="ads-error" id="d-pw-e">8자 이상 입력하세요.</p>
+        </div>
+        <div class="ads-field">
+          <label class="ads-label" for="d-dis">비활성</label>
+          <input class="ads-input" id="d-dis" value="수정 불가" disabled>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-11">
+      <div class="spec-head"><span class="spec-num">11</span><h3 class="spec-name">Textarea <span class="ko">텍스트에어리어</span></h3></div>
+      <p class="spec-purpose">여러 줄 입력. 세로 리사이즈만 허용해 레이아웃 붕괴를 막습니다.</p>
+      <div class="spec-demo" style="max-width:520px">
+        <div class="ads-field">
+          <label class="ads-label" for="d-memo">메모</label>
+          <textarea class="ads-input ads-textarea" id="d-memo" rows="4" placeholder="고객 응대 메모를 입력하세요."></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-12">
+      <div class="spec-head"><span class="spec-num">12</span><h3 class="spec-name">Select (native) <span class="ko">네이티브 셀렉트</span></h3></div>
+      <p class="spec-purpose">짧은 고정 옵션. 검색이 필요 없고 접근성이 중요하면 네이티브를 우선.</p>
+      <div class="spec-demo" style="max-width:280px">
+        <div class="ads-field">
+          <label class="ads-label" for="d-sort">정렬</label>
+          <div class="ads-select-wrap">
+            <select class="ads-input ads-select" id="d-sort"><option>최신순</option><option>이름순</option><option>결제액순</option></select>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-13">
+      <div class="spec-head"><span class="spec-num">13</span><h3 class="spec-name">Custom Dropdown / Combobox <span class="ko">커스텀 드롭다운</span></h3></div>
+      <p class="spec-purpose">검색·다중선택·리치 옵션이 필요할 때. 트리거를 눌러 팝오버를 열고 옵션을 선택하세요.</p>
+      <div class="spec-meta"><span>변형: single · multi · searchable · with-groups · with-avatar</span></div>
+      <div class="spec-demo" style="max-width:320px">
+        <div class="ads-combobox">
+          <button class="ads-input ads-combo-trigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="combo-list-1">
+            <span>담당자 선택</span><span class="ads-combo-caret">▾</span>
+          </button>
+          <div class="ads-combo-pop" id="combo-list-1" role="listbox" hidden>
+            <input class="ads-input ads-combo-search" placeholder="검색" aria-label="담당자 검색">
+            <div class="ads-combo-opt is-selected" id="combo-opt-1" role="option" aria-selected="true">김도현 <span class="ads-check">✓</span></div>
+            <div class="ads-combo-opt" id="combo-opt-2" role="option" aria-selected="false">이서연</div>
+            <div class="ads-combo-opt" id="combo-opt-3" role="option" aria-selected="false">박준호</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-14">
+      <div class="spec-head"><span class="spec-num">14</span><h3 class="spec-name">Date Picker <span class="ko">데이트피커</span></h3></div>
+      <p class="spec-purpose">날짜/기간 선택. 입력 필드 + 캘린더 팝오버. 숫자는 tabular-nums, 직접 입력도 허용.</p>
+      <div class="spec-meta"><span>변형: single · range · with-presets · with-time</span></div>
+      <div class="spec-demo" style="max-width:280px">
+        <div class="ads-datepicker">
+          <input class="ads-input ads-date-input" placeholder="YYYY-MM-DD" aria-label="날짜" aria-haspopup="dialog" aria-expanded="false" aria-controls="ads-cal-1" readonly value="2026-07-12">
+          <div class="ads-cal" id="ads-cal-1" role="dialog" aria-label="날짜 선택" hidden>
+            <div class="ads-cal-head"><button class="ads-icon-btn" aria-label="이전 달">‹</button><strong>2026년 7월</strong><button class="ads-icon-btn" aria-label="다음 달">›</button></div>
+            <div class="ads-cal-grid">
+              <span class="ads-cal-dow">일</span><span class="ads-cal-dow">월</span><span class="ads-cal-dow">화</span><span class="ads-cal-dow">수</span><span class="ads-cal-dow">목</span><span class="ads-cal-dow">금</span><span class="ads-cal-dow">토</span>
+              <button class="ads-cal-day">1</button><button class="ads-cal-day">2</button><button class="ads-cal-day">3</button><button class="ads-cal-day">4</button><button class="ads-cal-day is-today">5</button><button class="ads-cal-day">6</button><button class="ads-cal-day">7</button>
+              <button class="ads-cal-day">8</button><button class="ads-cal-day">9</button><button class="ads-cal-day">10</button><button class="ads-cal-day">11</button><button class="ads-cal-day is-selected">12</button><button class="ads-cal-day">13</button><button class="ads-cal-day">14</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-15">
+      <div class="spec-head"><span class="spec-num">15</span><h3 class="spec-name">Checkbox <span class="ko">체크박스</span></h3></div>
+      <p class="spec-purpose">다중 선택·동의·행 선택. 켜짐/꺼짐/부분선택(indeterminate) 3상태.</p>
+      <div class="spec-demo demo-col">
+        <label class="ads-check-row"><input type="checkbox" class="ads-checkbox" checked><span>이용약관에 동의합니다</span></label>
+        <label class="ads-check-row"><input type="checkbox" class="ads-checkbox"><span>마케팅 수신 (선택)</span></label>
+        <label class="ads-check-row"><input type="checkbox" class="ads-checkbox" data-ads-indeterminate><span>부분 선택 (indeterminate)</span></label>
+        <label class="ads-check-row" style="opacity:.5"><input type="checkbox" class="ads-checkbox" disabled><span>비활성</span></label>
+      </div>
+    </article>
+
+    <article class="spec" id="c-16">
+      <div class="spec-head"><span class="spec-num">16</span><h3 class="spec-name">Radio <span class="ko">라디오</span></h3></div>
+      <p class="spec-purpose">상호배타적 단일 선택. 2~5개 옵션을 모두 보여줄 때(그 이상은 셀렉트).</p>
+      <div class="spec-demo">
+        <fieldset class="ads-radio-group">
+          <label class="ads-radio-row"><input type="radio" name="d-plan" class="ads-radio" checked><span>월간 결제</span></label>
+          <label class="ads-radio-row"><input type="radio" name="d-plan" class="ads-radio"><span>연간 결제 (2개월 할인)</span></label>
+          <label class="ads-radio-row" style="opacity:.5"><input type="radio" name="d-plan" class="ads-radio" disabled><span>맞춤형 (문의)</span></label>
+        </fieldset>
+      </div>
+    </article>
+
+    <article class="spec" id="c-17">
+      <div class="spec-head"><span class="spec-num">17</span><h3 class="spec-name">Switch <span class="ko">스위치 · 토글</span></h3></div>
+      <p class="spec-purpose">즉시 반영되는 on/off. 저장 없이 바로 적용되는 이진 상태에 사용. Space로 토글.</p>
+      <div class="spec-demo demo-col">
+        <label class="ads-switch-row"><button role="switch" aria-checked="true" class="ads-switch" aria-label="이메일 알림"><span class="ads-switch-knob"></span></button><span>이메일 알림</span></label>
+        <label class="ads-switch-row"><button role="switch" aria-checked="false" class="ads-switch" aria-label="SMS 알림"><span class="ads-switch-knob"></span></button><span>SMS 알림</span></label>
+      </div>
+    </article>
+
+    <article class="spec" id="c-18">
+      <div class="spec-head"><span class="spec-num">18</span><h3 class="spec-name">File Upload <span class="ko">파일 업로드</span></h3></div>
+      <p class="spec-purpose">드래그앤드롭 + 클릭 선택. 허용 형식·최대 용량을 명시. 파일을 끌어와 보세요.</p>
+      <div class="spec-demo" style="max-width:440px">
+        <label class="ads-dropzone">
+          <input type="file" class="ads-visually-hidden" multiple>
+          <div class="ads-dz-icon" aria-hidden="true">⬆</div>
+          <p class="ads-dz-title">파일을 끌어다 놓거나 <span class="ads-dz-link">찾아보기</span></p>
+          <p class="ads-dz-hint">PNG · JPG · PDF · 최대 10MB</p>
+        </label>
+      </div>
+    </article>
+
+    <article class="spec" id="c-19">
+      <div class="spec-head"><span class="spec-num">19</span><h3 class="spec-name">Form Field <span class="ko">폼 필드 래퍼</span></h3></div>
+      <p class="spec-purpose">라벨·컨트롤·도움말·에러를 하나로 묶는 표준 래퍼. 모든 입력이 같은 수직 리듬을 공유.</p>
+      <div class="spec-demo demo-grid">
+        <div class="ads-field">
+          <label class="ads-label" for="d-name">이름 <span class="ads-req" aria-hidden="true">*</span></label>
+          <input class="ads-input" id="d-name" aria-required="true" placeholder="홍길동">
+          <p class="ads-help">실명을 입력하세요.</p>
+        </div>
+        <div class="ads-field is-error">
+          <label class="ads-label" for="d-phone">전화번호 <span class="ads-req" aria-hidden="true">*</span></label>
+          <input class="ads-input is-error" id="d-phone" value="010" aria-invalid="true" aria-describedby="d-phone-e">
+          <p class="ads-error" id="d-phone-e">올바른 전화번호를 입력하세요.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-20">
+      <div class="spec-head"><span class="spec-num">20</span><h3 class="spec-name">Slider / Range <span class="ko">슬라이더 · 범위</span></h3></div>
+      <p class="spec-purpose">연속 값을 드래그로 조절. 현재 값을 항상 표시(tabular-nums).</p>
+      <div class="spec-demo" style="max-width:420px">
+        <div class="ads-field">
+          <label class="ads-label" for="d-price">가격 상한 <strong class="ads-num">₩ 50,000</strong></label>
+          <input class="ads-slider" id="d-price" type="range" min="0" max="100000" step="1000" value="50000" aria-valuetext="5만원">
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ GROUP 3 · DATA DISPLAY ============ -->
+  <section class="demo-section" id="grp-data">
+    <h2 class="eyebrow"><span class="n">21–32</span> 데이터 표시</h2>
+
+    <article class="spec" id="c-21">
+      <div class="spec-head"><span class="spec-num">21</span><h3 class="spec-name">Data Table <span class="ko">데이터 테이블</span></h3></div>
+      <p class="spec-purpose">어드민의 심장. 정렬·행선택(전체선택 indeterminate)·벌크·밀도·sticky·빈/로딩. 상단 Density 스위처로 밀도를 바꿔보세요.</p>
+      <div class="spec-meta"><span>변형: sortable · selectable · sticky · density · with-toolbar · expandable</span></div>
+      <div class="spec-demo" style="padding:0;background:none;border:none">
+        <div class="ads-toolbar">
+          <div class="ads-search"><span class="ads-search-icon" aria-hidden="true">⌕</span><input class="ads-input ads-search-input" type="search" placeholder="이름·이메일 검색" aria-label="검색"></div>
+          <button class="ads-btn ads-btn-secondary ads-btn-sm">필터</button>
+          <span class="ads-tag">상태: 활성 <button class="ads-tag-x" aria-label="필터 제거">×</button></span>
+          <div style="margin-left:auto"><button class="ads-btn ads-btn-secondary ads-btn-sm">내보내기</button></div>
+        </div>
+        <div class="ads-table-wrap" style="border-radius:0 0 var(--radius-lg) var(--radius-lg)">
+          <table class="ads-table">
+            <thead><tr>
+              <th class="ads-th-check"><input type="checkbox" class="ads-checkbox" data-ads-select-all aria-label="전체 선택"></th>
+              <th aria-sort="ascending">이름 ↑</th><th>상태</th><th class="ads-num">누적 결제</th><th></th>
+            </tr></thead>
+            <tbody>
+              <tr><td><input type="checkbox" class="ads-checkbox" aria-label="김도현 선택"></td><td>김도현</td><td><span class="ads-badge ads-badge-success"><span class="ads-badge-dot"></span>활성</span></td><td class="ads-num">1,240,000</td><td><div class="ads-menu-wrap"><button class="ads-icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="더보기">⋯</button><div class="ads-menu" role="menu" hidden><button class="ads-menu-item" role="menuitem">수정</button><button class="ads-menu-item" role="menuitem">복제</button><div class="ads-menu-sep"></div><button class="ads-menu-item ads-menu-danger" role="menuitem">삭제</button></div></div></td></tr>
+              <tr><td><input type="checkbox" class="ads-checkbox" aria-label="이서연 선택"></td><td>이서연</td><td><span class="ads-badge ads-badge-warning">보류</span></td><td class="ads-num">832,500</td><td><button class="ads-icon-btn" aria-label="더보기">⋯</button></td></tr>
+              <tr><td><input type="checkbox" class="ads-checkbox" aria-label="박준호 선택"></td><td>박준호</td><td><span class="ads-badge ads-badge-danger">정지</span></td><td class="ads-num">2,105,000</td><td><button class="ads-icon-btn" aria-label="더보기">⋯</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-22">
+      <div class="spec-head"><span class="spec-num">22</span><h3 class="spec-name">Card / Panel <span class="ko">카드 · 패널</span></h3></div>
+      <p class="spec-purpose">관련 정보를 담는 표면 컨테이너. 헤더(제목·액션)·본문·푸터 슬롯. 패딩 16~24px 일관.</p>
+      <div class="spec-demo" style="max-width:420px">
+        <section class="ads-card">
+          <header class="ads-card-head"><h3 class="ads-card-title">최근 주문</h3><button class="ads-btn ads-btn-ghost ads-btn-sm">전체</button></header>
+          <div class="ads-card-body"><p class="spec-purpose" style="margin:0">카드 본문 영역입니다. 그림자와 경계 중 하나만으로 분리합니다.</p></div>
+        </section>
+      </div>
+    </article>
+
+    <article class="spec" id="c-23">
+      <div class="spec-head"><span class="spec-num">23</span><h3 class="spec-name">Stat / KPI Card <span class="ko">지표 · KPI 카드</span></h3></div>
+      <p class="spec-purpose">핵심 숫자 하나를 크게. 값 + 라벨 + 증감(부호+색+화살표). 값은 tabular-nums.</p>
+      <div class="spec-demo demo-grid">
+        <section class="ads-card ads-stat"><p class="ads-stat-label">오늘 매출</p><p class="ads-stat-value">₩ 12,480,000</p><p class="ads-stat-delta is-up">▲ 8.2% <span>어제 대비</span></p></section>
+        <section class="ads-card ads-stat"><p class="ads-stat-label">신규 가입</p><p class="ads-stat-value">1,284</p><p class="ads-stat-delta is-down">▼ 3.1% <span>지난주 대비</span></p></section>
+        <section class="ads-card ads-stat"><p class="ads-stat-label">활성 세션</p><p class="ads-stat-value">312</p><p class="ads-stat-delta is-up">▲ 12 <span>실시간</span></p></section>
+      </div>
+    </article>
+
+    <article class="spec" id="c-24">
+      <div class="spec-head"><span class="spec-num">24</span><h3 class="spec-name">Badge / Status Pill <span class="ko">배지 · 상태 필</span></h3></div>
+      <p class="spec-purpose">상태·카테고리를 압축한 라벨. subtle 배경 + content 텍스트. 색만으로 의미 전달 금지(텍스트 필수).</p>
+      <div class="spec-demo demo-row">
+        <span class="ads-badge ads-badge-neutral">중립</span>
+        <span class="ads-badge ads-badge-accent">강조</span>
+        <span class="ads-badge ads-badge-success"><span class="ads-badge-dot"></span>활성</span>
+        <span class="ads-badge ads-badge-warning">보류</span>
+        <span class="ads-badge ads-badge-danger">정지</span>
+        <span class="ads-badge ads-badge-info">안내</span>
+      </div>
+    </article>
+
+    <article class="spec" id="c-25">
+      <div class="spec-head"><span class="spec-num">25</span><h3 class="spec-name">Tag / Chip <span class="ko">태그 · 칩</span></h3></div>
+      <p class="spec-purpose">제거 가능한 라벨. 적용된 필터·선택 항목을 표시하고 개별 삭제(×). 선택형은 aria-pressed.</p>
+      <div class="spec-demo demo-row">
+        <span class="ads-tag">상태: 활성 <button class="ads-tag-x" aria-label="필터 제거">×</button></span>
+        <span class="ads-tag">등급: VIP <button class="ads-tag-x" aria-label="필터 제거">×</button></span>
+        <button class="ads-tag ads-tag-select is-selected" aria-pressed="true">VIP</button>
+        <button class="ads-tag ads-tag-select" aria-pressed="false">신규</button>
+      </div>
+    </article>
+
+    <article class="spec" id="c-26">
+      <div class="spec-head"><span class="spec-num">26</span><h3 class="spec-name">Avatar / Profile <span class="ko">아바타 · 프로필</span></h3></div>
+      <p class="spec-purpose">사용자를 나타내는 이미지/이니셜. 온라인 상태점·이름/역할 조합. 이미지 없으면 이니셜 폴백.</p>
+      <div class="spec-meta"><span>크기: xs 24 · sm 32 · md 40 · lg 48</span></div>
+      <div class="spec-demo demo-row">
+        <span class="ads-avatar ads-avatar-xs">KD</span>
+        <span class="ads-avatar ads-avatar-sm">이</span>
+        <span class="ads-avatar ads-avatar-md">KD<span class="ads-avatar-status" title="온라인"></span></span>
+        <span class="ads-avatar ads-avatar-lg">박</span>
+        <div class="ads-profile"><span class="ads-avatar ads-avatar-md">KD<span class="ads-avatar-status"></span></span><div class="ads-profile-text"><strong>김도현</strong><span>관리자 · 온라인</span></div></div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-27">
+      <div class="spec-head"><span class="spec-num">27</span><h3 class="spec-name">Description List <span class="ko">정의 리스트 (키-값)</span></h3></div>
+      <p class="spec-purpose">상세 화면의 속성 나열. 라벨은 secondary, 값은 primary. 숫자 값은 tabular.</p>
+      <div class="spec-demo" style="max-width:480px">
+        <dl class="ads-desc">
+          <div class="ads-desc-row"><dt>주문번호</dt><dd>ORD-20260705-001</dd></div>
+          <div class="ads-desc-row"><dt>주문자</dt><dd>김도현</dd></div>
+          <div class="ads-desc-row"><dt>결제금액</dt><dd class="ads-num">₩ 128,000</dd></div>
+          <div class="ads-desc-row"><dt>상태</dt><dd><span class="ads-badge ads-badge-success">결제완료</span></dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="spec" id="c-28">
+      <div class="spec-head"><span class="spec-num">28</span><h3 class="spec-name">Tooltip <span class="ko">툴팁</span></h3></div>
+      <p class="spec-purpose">짧은 보조 설명. hover·focus 모두 트리거. 필수 정보는 툴팁에 숨기지 않음.</p>
+      <div class="spec-demo demo-row" style="padding-top:var(--space-800)">
+        <span class="ads-tip-wrap">
+          <button class="ads-icon-btn" aria-describedby="d-tip" aria-label="정보" style="border:1px solid var(--sys-border-default)">i</button>
+          <span role="tooltip" id="d-tip" class="ads-tooltip">최근 30일 기준</span>
+        </span>
+        <span class="spec-purpose" style="margin:0">(항상 표시 예시 — 실제로는 hover/focus 시 노출)</span>
+      </div>
+    </article>
+
+    <article class="spec" id="c-29">
+      <div class="spec-head"><span class="spec-num">29</span><h3 class="spec-name">Charts <span class="ko">차트</span></h3></div>
+      <p class="spec-purpose">수치를 시각화. 색은 --viz-* 데이터 팔레트만 사용. 단일 시리즈는 accent, 축·그리드는 은은하게.</p>
+      <div class="spec-meta"><span>변형: line/area · bar/column · donut · sparkline · stacked</span></div>
+      <div class="spec-demo" style="max-width:520px">
+        <figure class="ads-chart" role="img" aria-label="최근 6개월 매출 추이, 상승세">
+          <div class="ads-bars">
+            <span style="--h:40%"></span><span style="--h:62%"></span><span style="--h:55%"></span>
+            <span style="--h:78%"></span><span style="--h:70%"></span><span style="--h:92%"></span>
+          </div>
+          <figcaption class="ads-chart-cap">2월–7월 · 단위 백만원</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="spec" id="c-30">
+      <div class="spec-head"><span class="spec-num">30</span><h3 class="spec-name">List <span class="ko">리스트</span></h3></div>
+      <p class="spec-purpose">테이블보다 단순한 세로 목록. 아바타/아이콘 + 주/보조 텍스트 + 우측 메타. 2줄까지만.</p>
+      <div class="spec-demo" style="max-width:520px;background:var(--sys-background-surface);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg)">
+        <ul class="ads-list">
+          <li class="ads-list-item"><span class="ads-avatar ads-avatar-sm">이</span><div class="ads-list-text"><strong>이서연</strong><span>회원 등급이 VIP로 변경됨</span></div><span class="ads-list-meta">2분 전</span></li>
+          <li class="ads-list-item"><span class="ads-avatar ads-avatar-sm">박</span><div class="ads-list-text"><strong>박준호</strong><span>결제 실패 — 카드 만료</span></div><span class="ads-list-meta">18분 전</span></li>
+          <li class="ads-list-item" style="border-bottom:none"><span class="ads-avatar ads-avatar-sm">KD</span><div class="ads-list-text"><strong>김도현</strong><span>비밀번호를 변경함</span></div><span class="ads-list-meta">1시간 전</span></li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="spec" id="c-31">
+      <div class="spec-head"><span class="spec-num">31</span><h3 class="spec-name">Tree <span class="ko">트리</span></h3></div>
+      <p class="spec-purpose">계층 구조를 펼치고 접으며 탐색. 토글(▾)을 눌러 하위 그룹을 열고 닫으세요.</p>
+      <div class="spec-demo" style="max-width:360px">
+        <ul class="ads-tree" role="tree">
+          <li role="treeitem" aria-expanded="true">
+            <div class="ads-tree-row"><button class="ads-tree-toggle" aria-label="접기">▾</button>플랫폼</div>
+            <ul role="group">
+              <li role="treeitem"><div class="ads-tree-row" style="padding-left:var(--space-700)">결제</div></li>
+              <li role="treeitem"><div class="ads-tree-row" aria-current="true" style="padding-left:var(--space-700)">정산</div></li>
+            </ul>
+          </li>
+          <li role="treeitem" aria-expanded="false">
+            <div class="ads-tree-row"><button class="ads-tree-toggle" aria-label="펼치기">▸</button>운영</div>
+            <ul role="group" hidden>
+              <li role="treeitem"><div class="ads-tree-row" style="padding-left:var(--space-700)">회원</div></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="spec" id="c-32">
+      <div class="spec-head"><span class="spec-num">32</span><h3 class="spec-name">Filter Bar / Toolbar <span class="ko">필터 바 · 툴바</span></h3></div>
+      <p class="spec-purpose">검색·필터·정렬·벌크를 모으는 제어 영역. 적용된 필터는 제거 가능한 칩으로 요약.</p>
+      <div class="spec-demo" style="padding:0;background:none;border:none">
+        <div class="ads-toolbar" style="border-radius:var(--radius-lg)">
+          <div class="ads-search"><span class="ads-search-icon" aria-hidden="true">⌕</span><input class="ads-input ads-search-input" type="search" placeholder="검색" aria-label="검색"></div>
+          <button class="ads-btn ads-btn-secondary ads-btn-sm">필터</button>
+          <span class="ads-tag">상태: 활성 <button class="ads-tag-x" aria-label="제거">×</button></span>
+          <span class="ads-tag">기간: 이번 달 <button class="ads-tag-x" aria-label="제거">×</button></span>
+          <button class="ads-btn ads-btn-ghost ads-btn-sm">초기화</button>
+          <div style="margin-left:auto"><button class="ads-btn ads-btn-secondary ads-btn-sm">내보내기</button></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ GROUP 4 · FEEDBACK & OVERLAY ============ -->
+  <section class="demo-section" id="grp-feedback">
+    <h2 class="eyebrow"><span class="n">33–42</span> 피드백 · 오버레이</h2>
+
+    <article class="spec" id="c-33">
+      <div class="spec-head"><span class="spec-num">33</span><h3 class="spec-name">Modal / Dialog <span class="ko">모달 · 다이얼로그</span></h3></div>
+      <p class="spec-purpose">흐름을 멈추고 집중을 요구하는 오버레이. 포커스 트랩·Esc·스크림 클릭으로 닫힘.</p>
+      <div class="spec-meta"><span>변형: confirm · form-modal · sizes(sm/md/lg) · destructive</span></div>
+      <div class="spec-demo demo-row">
+        <button class="ads-btn ads-btn-secondary" data-ads-open="ads-modal-demo">확인 모달 열기</button>
+        <button class="ads-btn ads-btn-danger" data-ads-open="ads-modal-danger">삭제 모달 열기</button>
+      </div>
+    </article>
+
+    <article class="spec" id="c-34">
+      <div class="spec-head"><span class="spec-num">34</span><h3 class="spec-name">Drawer / Side Panel <span class="ko">드로어 · 사이드 패널</span></h3></div>
+      <p class="spec-purpose">화면 가장자리에서 밀려나오는 패널. 상세 편집·필터에. 본문만 스크롤, 헤더/푸터 고정.</p>
+      <div class="spec-demo demo-row">
+        <button class="ads-btn ads-btn-secondary" data-ads-open="ads-drawer-demo">필터 드로어 열기</button>
+      </div>
+    </article>
+
+    <article class="spec" id="c-35">
+      <div class="spec-head"><span class="spec-num">35</span><h3 class="spec-name">Toast <span class="ko">토스트</span></h3></div>
+      <p class="spec-purpose">작업 결과를 방해 없이 알리는 임시 알림. 파괴적 작업엔 실행취소. 우하단 스택으로 정렬.</p>
+      <div class="spec-demo demo-col">
+        <div class="demo-row">
+          <button class="ads-btn ads-btn-secondary ads-btn-sm" data-ads-toast="저장했습니다." data-ads-toast-kind="success">성공 토스트</button>
+          <button class="ads-btn ads-btn-secondary ads-btn-sm" data-ads-toast="삭제하지 못했습니다." data-ads-toast-kind="error">오류 토스트</button>
+          <button class="ads-btn ads-btn-secondary ads-btn-sm" data-ads-toast="3건이 처리되었습니다." data-ads-toast-kind="info">안내 토스트</button>
+        </div>
+        <div class="state-tag">정적 예시</div>
+        <div class="ads-toast" role="status" style="max-width:360px"><span class="ads-toast-icon ads-toast-success">✓</span><span class="ads-toast-msg">저장했습니다.</span><button class="ads-btn ads-btn-ghost ads-btn-sm">실행취소</button></div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-36">
+      <div class="spec-head"><span class="spec-num">36</span><h3 class="spec-name">Inline Alert / Banner <span class="ko">인라인 알럿 · 배너</span></h3></div>
+      <p class="spec-purpose">페이지 흐름 안에 머무는 지속적 메시지. 색+아이콘+문구 3중. 해결 방법을 함께 안내.</p>
+      <div class="spec-demo demo-col">
+        <div class="ads-alert ads-alert-info" role="note"><span class="ads-alert-icon" aria-hidden="true">i</span><div class="ads-alert-content"><strong>예약 점검 안내</strong><p>7월 6일 02:00–04:00 서비스가 일시 중단됩니다.</p></div></div>
+        <div class="ads-alert ads-alert-warning" role="alert"><span class="ads-alert-icon" aria-hidden="true">!</span><div class="ads-alert-content"><strong>결제 실패 3건</strong><p>카드 정보를 확인하세요.</p></div></div>
+        <div class="ads-alert ads-alert-danger" role="alert"><span class="ads-alert-icon" aria-hidden="true">×</span><div class="ads-alert-content"><strong>연동이 중단되었습니다</strong><p>API 키가 만료되었습니다. 새 키를 발급하세요.</p></div></div>
+        <div class="ads-alert ads-alert-success" role="status"><span class="ads-alert-icon" aria-hidden="true">✓</span><div class="ads-alert-content"><strong>동기화 완료</strong><p>1,284건이 정상 반영되었습니다.</p></div></div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-37">
+      <div class="spec-head"><span class="spec-num">37</span><h3 class="spec-name">Dropdown Menu <span class="ko">드롭다운 메뉴</span></h3></div>
+      <p class="spec-purpose">액션 목록을 담는 팝오버 메뉴. 위험 항목은 하단 분리 + danger 색. 트리거를 눌러보세요.</p>
+      <div class="spec-demo demo-row">
+        <div class="ads-menu-wrap">
+          <button class="ads-btn ads-btn-secondary" aria-haspopup="menu" aria-expanded="false">액션 ▾</button>
+          <div class="ads-menu" role="menu" hidden style="left:0;right:auto">
+            <button class="ads-menu-item" role="menuitem">수정</button>
+            <button class="ads-menu-item" role="menuitem">복제</button>
+            <button class="ads-menu-item" role="menuitem">내보내기</button>
+            <div class="ads-menu-sep"></div>
+            <button class="ads-menu-item ads-menu-danger" role="menuitem">삭제</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-38">
+      <div class="spec-head"><span class="spec-num">38</span><h3 class="spec-name">Progress · Spinner <span class="ko">진행률 · 스피너</span></h3></div>
+      <p class="spec-purpose">확정 진행(막대)과 불확정 대기(스피너)를 구분. 확정이면 % 라벨 병기.</p>
+      <div class="spec-demo demo-col" style="max-width:420px">
+        <div><div class="state-tag">Determinate · 64%</div><div class="ads-progress" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="ads-progress-fill" style="width:64%"></div></div></div>
+        <div class="demo-row"><span class="ads-spinner" role="progressbar" aria-label="불러오는 중"></span> <span class="spec-purpose" style="margin:0">Indeterminate</span></div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-39">
+      <div class="spec-head"><span class="spec-num">39</span><h3 class="spec-name">Skeleton Loader <span class="ko">스켈레톤 로더</span></h3></div>
+      <p class="spec-purpose">콘텐츠 로드 전 자리를 예약하는 플레이스홀더. 실제 콘텐츠 형태를 모방, shimmer는 은은하게.</p>
+      <div class="spec-demo demo-col" style="max-width:480px">
+        <div class="ads-skel-row" aria-busy="true" aria-label="불러오는 중">
+          <div class="ads-skel ads-skel-circle"></div>
+          <div style="flex:1"><div class="ads-skel ads-skel-line" style="width:40%"></div><div class="ads-skel ads-skel-line" style="width:70%"></div></div>
+        </div>
+        <div class="ads-skel ads-skel-line" style="width:90%"></div>
+        <div class="ads-skel ads-skel-line" style="width:60%"></div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-40">
+      <div class="spec-head"><span class="spec-num">40</span><h3 class="spec-name">Empty State <span class="ko">빈 상태</span></h3></div>
+      <p class="spec-purpose">데이터가 없을 때의 안내. 왜 비었는지 + 다음 행동을 제시해 막다른 길을 없앰.</p>
+      <div class="spec-demo" style="background:var(--sys-background-surface)">
+        <div class="ads-empty" style="padding:var(--space-800) var(--space-600)">
+          <div class="ads-empty-icon" aria-hidden="true">🗂</div>
+          <h3 class="ads-empty-title">아직 회원이 없어요</h3>
+          <p class="ads-empty-desc">첫 회원을 추가해 관리를 시작하세요.</p>
+          <button class="ads-btn ads-btn-primary">회원 추가</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-41">
+      <div class="spec-head"><span class="spec-num">41</span><h3 class="spec-name">Popover <span class="ko">팝오버</span></h3></div>
+      <p class="spec-purpose">상호작용 가능한 소형 콘텐츠 컨테이너. 툴팁과 달리 버튼·폼·리스트를 담음. 트리거를 눌러보세요.</p>
+      <div class="spec-demo demo-row">
+        <div class="ads-pop-wrap">
+          <button class="ads-btn ads-btn-secondary ads-btn-sm" aria-haspopup="dialog" aria-expanded="false">열 설정</button>
+          <div class="ads-popover" role="dialog" aria-label="열 설정" hidden>
+            <label class="ads-check-row"><input type="checkbox" class="ads-checkbox" checked><span>이름</span></label>
+            <label class="ads-check-row"><input type="checkbox" class="ads-checkbox" checked><span>상태</span></label>
+            <label class="ads-check-row"><input type="checkbox" class="ads-checkbox"><span>누적 결제</span></label>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-42">
+      <div class="spec-head"><span class="spec-num">42</span><h3 class="spec-name">Error State <span class="ko">오류 상태</span></h3></div>
+      <p class="spec-purpose">로드 실패·권한 부족·서버 오류를 알리고 대응(재시도·문의)을 안내. Empty State 마크업을 재사용.</p>
+      <div class="spec-demo" style="background:var(--sys-background-surface)">
+        <div class="ads-empty" role="alert" style="padding:var(--space-800) var(--space-600)">
+          <div class="ads-empty-icon" aria-hidden="true" style="color:var(--sys-status-danger-content)">⚠</div>
+          <h3 class="ads-empty-title">데이터를 불러오지 못했어요</h3>
+          <p class="ads-empty-desc">일시적인 오류일 수 있어요. 잠시 후 다시 시도하세요.</p>
+          <div style="display:flex;gap:var(--space-200)"><button class="ads-btn ads-btn-secondary">문의하기</button><button class="ads-btn ads-btn-primary">다시 시도</button></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ GROUP 5 · UTILITY & ADMIN ============ -->
+  <section class="demo-section" id="grp-util">
+    <h2 class="eyebrow"><span class="n">43–46</span> 유틸리티 · 어드민 특화</h2>
+
+    <article class="spec" id="c-43">
+      <div class="spec-head"><span class="spec-num">43</span><h3 class="spec-name">Divider <span class="ko">디바이더 · 구분선</span></h3></div>
+      <p class="spec-purpose">콘텐츠를 나누는 최소 단위. 여백으로 부족할 때만 절제해 subtle 색으로.</p>
+      <div class="spec-demo" style="max-width:480px">
+        <p class="spec-purpose" style="margin:0">위 콘텐츠</p>
+        <hr class="ads-divider">
+        <div class="ads-divider-label"><span>또는</span></div>
+        <p class="spec-purpose" style="margin:0">아래 콘텐츠</p>
+      </div>
+    </article>
+
+    <article class="spec" id="c-44">
+      <div class="spec-head"><span class="spec-num">44</span><h3 class="spec-name">Search Field <span class="ko">검색 필드</span></h3></div>
+      <p class="spec-purpose">아이콘 + 즉시 지우기 + (전역) 단축키 힌트를 갖춘 인풋 변형. 좌측 검색 아이콘 + placeholder 예시.</p>
+      <div class="spec-demo" style="max-width:360px">
+        <div class="ads-search">
+          <span class="ads-search-icon" aria-hidden="true">⌕</span>
+          <input class="ads-input ads-search-input" type="search" placeholder="이름·이메일 검색" aria-label="검색">
+          <kbd class="ads-kbd">⌘K</kbd>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-45">
+      <div class="spec-head"><span class="spec-num">45</span><h3 class="spec-name">Permission Matrix <span class="ko">권한 · 역할 매트릭스</span></h3></div>
+      <p class="spec-purpose">역할(행) × 기능(열)의 교차 지점에서 권한을 토글하는 격자. RBAC 설정의 핵심. 허용/거부는 색+체크 이중 표기.</p>
+      <div class="spec-demo" style="padding:0;background:none;border:none">
+        <div class="ads-table-wrap">
+          <table class="ads-table ads-matrix">
+            <thead><tr><th scope="col">역할</th><th scope="col">조회</th><th scope="col">생성</th><th scope="col">수정</th><th scope="col">삭제</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">관리자</th><td><input type="checkbox" class="ads-checkbox" checked aria-label="관리자 조회"></td><td><input type="checkbox" class="ads-checkbox" checked aria-label="관리자 생성"></td><td><input type="checkbox" class="ads-checkbox" checked aria-label="관리자 수정"></td><td><input type="checkbox" class="ads-checkbox" checked aria-label="관리자 삭제"></td></tr>
+              <tr><th scope="row">운영자</th><td><input type="checkbox" class="ads-checkbox" checked aria-label="운영자 조회"></td><td><input type="checkbox" class="ads-checkbox" checked aria-label="운영자 생성"></td><td><input type="checkbox" class="ads-checkbox" checked aria-label="운영자 수정"></td><td><input type="checkbox" class="ads-checkbox" aria-label="운영자 삭제"></td></tr>
+              <tr><th scope="row">뷰어</th><td><input type="checkbox" class="ads-checkbox" checked aria-label="뷰어 조회"></td><td><input type="checkbox" class="ads-checkbox" aria-label="뷰어 생성"></td><td><input type="checkbox" class="ads-checkbox" aria-label="뷰어 수정"></td><td><input type="checkbox" class="ads-checkbox" aria-label="뷰어 삭제"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec" id="c-46">
+      <div class="spec-head"><span class="spec-num">46</span><h3 class="spec-name">Timeline / Audit Log <span class="ko">타임라인 · 감사 로그</span></h3></div>
+      <p class="spec-purpose">누가·언제·무엇을 했는지 시간순 나열. 타임스탬프는 tabular-nums, 행위자·동작·대상 3요소 명확.</p>
+      <div class="spec-demo" style="max-width:560px">
+        <ol class="ads-timeline">
+          <li class="ads-tl-item"><span class="ads-tl-dot"></span><div class="ads-tl-body"><p><strong>김도현</strong> 님이 회원 <strong>이서연</strong>을 정지함</p><time class="ads-tl-time" datetime="2026-07-05T13:20">2026-07-05 13:20</time></div></li>
+          <li class="ads-tl-item"><span class="ads-tl-dot"></span><div class="ads-tl-body"><p><strong>박준호</strong> 님이 역할 <strong>운영자</strong>의 삭제 권한을 해제함</p><time class="ads-tl-time" datetime="2026-07-05T11:04">2026-07-05 11:04</time></div></li>
+          <li class="ads-tl-item"><span class="ads-tl-dot"></span><div class="ads-tl-body"><p><strong>시스템</strong>이 정산 배치를 완료함</p><time class="ads-tl-time" datetime="2026-07-05T03:00">2026-07-05 03:00</time></div></li>
+        </ol>
+      </div>
+    </article>
+  </section>
+
+  <footer style="margin-top:var(--space-1100);padding-top:var(--space-600);border-top:1px solid var(--sys-border-default);font:var(--text-body-sm);color:var(--sys-content-tertiary)">
+    Console · Admin Design System — v1.0.0 · 46 컴포넌트 · 3-tier 토큰 · License-safe(SIL OFL). 이 카탈로그는 vanilla HTML/CSS/JS 정적 사이트입니다.
+  </footer>
+</main>
+</div>
+
+<!-- ============ OVERLAYS (hidden until opened) ============ -->
+<div class="ads-scrim" id="ads-modal-demo" hidden>
+  <div class="ads-modal" role="dialog" aria-modal="true" aria-labelledby="mt1" tabindex="-1">
+    <header class="ads-modal-head"><h2 id="mt1" class="ads-modal-title">변경 사항 저장</h2><button class="ads-icon-btn" aria-label="닫기" data-ads-close>×</button></header>
+    <div class="ads-modal-body">수정한 내용을 저장할까요? 저장하지 않으면 변경 사항이 사라집니다.</div>
+    <footer class="ads-modal-foot"><button class="ads-btn ads-btn-secondary" data-ads-close>취소</button><button class="ads-btn ads-btn-primary" data-ads-close>저장</button></footer>
+  </div>
+</div>
+
+<div class="ads-scrim" id="ads-modal-danger" hidden>
+  <div class="ads-modal" role="dialog" aria-modal="true" aria-labelledby="mt2" tabindex="-1" style="max-width:400px">
+    <header class="ads-modal-head"><h2 id="mt2" class="ads-modal-title">회원 삭제</h2><button class="ads-icon-btn" aria-label="닫기" data-ads-close>×</button></header>
+    <div class="ads-modal-body">이 작업은 <strong style="color:var(--sys-content-primary)">되돌릴 수 없습니다</strong>. 회원 <strong style="color:var(--sys-content-primary)">이서연</strong> 님을 삭제할까요?</div>
+    <footer class="ads-modal-foot"><button class="ads-btn ads-btn-secondary" data-ads-close>취소</button><button class="ads-btn ads-btn-danger" data-ads-close>삭제</button></footer>
+  </div>
+</div>
+
+<div class="ads-scrim" id="ads-drawer-demo" hidden style="place-items:stretch;padding:0">
+  <aside class="ads-drawer" role="dialog" aria-modal="true" aria-labelledby="dt1" tabindex="-1">
+    <header class="ads-drawer-head"><h2 id="dt1" class="ads-modal-title">필터</h2><button class="ads-icon-btn" aria-label="닫기" data-ads-close>×</button></header>
+    <div class="ads-drawer-body demo-col">
+      <div class="ads-field"><label class="ads-label" for="dw-status">상태</label><div class="ads-select-wrap"><select class="ads-input ads-select" id="dw-status"><option>전체</option><option>활성</option><option>정지</option></select></div></div>
+      <div class="ads-field"><label class="ads-label" for="dw-grade">등급</label><div class="ads-select-wrap"><select class="ads-input ads-select" id="dw-grade"><option>전체</option><option>VIP</option><option>일반</option></select></div></div>
+      <label class="ads-check-row"><input type="checkbox" class="ads-checkbox" checked><span>결제 이력 있는 회원만</span></label>
+    </div>
+    <footer class="ads-modal-foot"><button class="ads-btn ads-btn-ghost" data-ads-close>초기화</button><button class="ads-btn ads-btn-primary" data-ads-close>적용</button></footer>
+  </aside>
+</div>
+
+<div class="ads-scrim ads-cmdk-scrim" id="ads-cmdk" hidden>
+  <div class="ads-cmdk" role="dialog" aria-modal="true" aria-label="명령 검색">
+    <input class="ads-cmdk-input" role="combobox" aria-expanded="true" aria-controls="cmdk-list" placeholder="명령·페이지 검색…" aria-label="명령 검색">
+    <div class="ads-cmdk-list" id="cmdk-list" role="listbox" aria-label="검색 결과">
+      <p class="ads-cmdk-group" role="presentation">이동</p>
+      <div class="ads-cmdk-item is-active" id="cmdk-opt-1" role="option" aria-selected="true"><span>대시보드로 이동</span><kbd class="ads-kbd" style="position:static">G D</kbd></div>
+      <div class="ads-cmdk-item" id="cmdk-opt-2" role="option" aria-selected="false"><span>회원 관리</span><kbd class="ads-kbd" style="position:static">G M</kbd></div>
+      <div class="ads-cmdk-item" id="cmdk-opt-3" role="option" aria-selected="false"><span>주문 관리</span><kbd class="ads-kbd" style="position:static">G O</kbd></div>
+      <p class="ads-cmdk-group" role="presentation">액션</p>
+      <div class="ads-cmdk-item" id="cmdk-opt-4" role="option" aria-selected="false"><span>회원 추가</span></div>
+      <div class="ads-cmdk-item" id="cmdk-opt-5" role="option" aria-selected="false"><span>데이터 내보내기</span></div>
+      <p class="ads-cmdk-empty" hidden>결과가 없습니다.</p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

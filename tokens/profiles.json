@@ -1,0 +1,27 @@
+{
+  "$description": "Console ADS — 5 accent profiles. Each remaps the --sys-accent-* / --sys-border-focus / --sys-content-accent slots via [data-accent]. Orthogonal to theme: data-theme controls lightness, data-accent controls hue. 5 accents × 2 themes = 10 combos, zero component changes (principle 03).",
+  "$version": "1.0.0",
+  "$slots": ["accent-solid", "accent-hover", "accent-active", "accent-subtle", "accent-muted", "accent-content", "accent-on-solid", "border-focus", "content-accent"],
+  "profiles": {
+    "indigo": {
+      "light": { "accent-solid": "#4A4FD1", "accent-hover": "#393EAB", "accent-active": "#2D3186", "accent-subtle": "#EEF0FE", "accent-muted": "#C4CAFB", "accent-content": "#393EAB", "accent-on-solid": "#FFFFFF", "border-focus": "#4A4FD1", "content-accent": "#393EAB" },
+      "dark":  { "accent-solid": "#7681F1", "accent-hover": "#9DA6F7", "accent-active": "#C4CAFB", "accent-subtle": "#1E2150", "accent-muted": "#393EAB", "accent-content": "#9DA6F7", "accent-on-solid": "#0F1116", "border-focus": "#7681F1", "content-accent": "#9DA6F7" }
+    },
+    "blue": {
+      "light": { "accent-solid": "#1D5FD6", "accent-hover": "#184EB0", "accent-active": "#163F8A", "accent-subtle": "#EAF2FE", "accent-muted": "#ADC8FB", "accent-content": "#184EB0", "accent-on-solid": "#FFFFFF", "border-focus": "#1D5FD6", "content-accent": "#184EB0" },
+      "dark":  { "accent-solid": "#5389F0", "accent-hover": "#7FA8F6", "accent-active": "#ADC8FB", "accent-subtle": "#132F63", "accent-muted": "#184EB0", "accent-content": "#7FA8F6", "accent-on-solid": "#0F1116", "border-focus": "#5389F0", "content-accent": "#7FA8F6" }
+    },
+    "teal": {
+      "light": { "accent-solid": "#0E8074", "accent-hover": "#0B6459", "accent-active": "#0B4A43", "accent-subtle": "#E6F7F4", "accent-muted": "#94DDD3", "accent-content": "#0B6459", "accent-on-solid": "#FFFFFF", "border-focus": "#0E8074", "content-accent": "#0B6459" },
+      "dark":  { "accent-solid": "#33AC9E", "accent-hover": "#5FC7BA", "accent-active": "#94DDD3", "accent-subtle": "#0B4A43", "accent-muted": "#0B6459", "accent-content": "#5FC7BA", "accent-on-solid": "#0F1116", "border-focus": "#33AC9E", "content-accent": "#5FC7BA" }
+    },
+    "violet": {
+      "light": { "accent-solid": "#7A3BD6", "accent-hover": "#6A2FC0", "accent-active": "#54239B", "accent-subtle": "#F5EEFE", "accent-muted": "#D6BCFA", "accent-content": "#6A2FC0", "accent-on-solid": "#FFFFFF", "border-focus": "#7A3BD6", "content-accent": "#6A2FC0" },
+      "dark":  { "accent-solid": "#A06BEF", "accent-hover": "#BB92F5", "accent-active": "#D6BCFA", "accent-subtle": "#37206B", "accent-muted": "#6A2FC0", "accent-content": "#BB92F5", "accent-on-solid": "#0F1116", "border-focus": "#A06BEF", "content-accent": "#BB92F5" }
+    },
+    "neutral": {
+      "light": { "accent-solid": "#2E333E", "accent-hover": "#181B22", "accent-active": "#0A0B0E", "accent-subtle": "#EEF0F4", "accent-muted": "#CFD4DE", "accent-content": "#2E333E", "accent-on-solid": "#FFFFFF", "border-focus": "#2E333E", "content-accent": "#2E333E" },
+      "dark":  { "accent-solid": "#E2E5EB", "accent-hover": "#F3F5F8", "accent-active": "#FFFFFF", "accent-subtle": "#23272F", "accent-muted": "#454B59", "accent-content": "#CFD4DE", "accent-on-solid": "#181B22", "border-focus": "#E2E5EB", "content-accent": "#CFD4DE" }
+    }
+  }
+}

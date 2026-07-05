@@ -1,0 +1,391 @@
+/* ===================================================================
+   Console · Admin Design System — components.css   v1.0.0  (2026-07-05)
+   46 components across 5 groups. Every color/size/space references a
+   token from foundation.css. Accent is ALWAYS --sys-accent-* — never a
+   literal color name (principle 03). Requires foundation.css first.
+   =================================================================== */
+
+/* Overlays/poppers kept in the DOM and toggled via the `hidden` attribute
+   must honor it even though some set an explicit display (scrim=grid,
+   popover=flex). An attribute+class selector out-specifies the bare class. */
+.ads-scrim[hidden],.ads-popover[hidden]{display:none}
+
+/* ===================================================================
+   ● 레이아웃 · 내비게이션  (Layout & Navigation)
+   =================================================================== */
+
+/* 01 · App Shell -------------------------------------------------- */
+.ads-shell{display:grid;grid-template-columns:var(--layout-sidebar-width) 1fr;grid-template-rows:var(--layout-topbar-height) 1fr;grid-template-areas:"sidebar topbar" "sidebar content";min-height:100vh;background:var(--sys-background-canvas)}
+.ads-sidebar{grid-area:sidebar;position:sticky;top:0;height:100vh;border-right:1px solid var(--sys-border-default);background:var(--sys-background-surface)}
+.ads-topbar{grid-area:topbar;position:sticky;top:0;z-index:var(--z-sticky);border-bottom:1px solid var(--sys-border-default);background:var(--sys-background-surface)}
+.ads-content{grid-area:content;overflow:auto}
+.ads-content-inner{max-width:var(--layout-content-max);margin:0 auto;padding:var(--space-600) var(--layout-content-pad)}
+[data-sidebar="collapsed"] .ads-shell{grid-template-columns:var(--layout-sidebar-collapsed) 1fr}
+
+/* 02 · Sidebar Navigation ---------------------------------------- */
+.ads-nav{padding:var(--space-300)}
+.ads-nav-group{font:var(--text-overline);text-transform:uppercase;color:var(--sys-content-tertiary);padding:var(--space-300) var(--space-300) var(--space-150)}
+.ads-nav-item{display:flex;align-items:center;gap:var(--space-300);height:38px;padding:0 var(--space-300);border-radius:var(--radius-md);color:var(--sys-content-secondary);font:var(--text-label-md);text-decoration:none}
+.ads-nav-item:hover{background:var(--sys-background-hover);color:var(--sys-content-primary)}
+.ads-nav-item.is-active{background:var(--sys-accent-subtle);color:var(--sys-accent-content)}
+.ads-nav-item:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.ads-ic{width:20px;height:20px;flex:none}
+
+/* 03 · Topbar ----------------------------------------------------- */
+.ads-topbar-inner{display:flex;align-items:center;gap:var(--space-400);height:100%;padding:0 var(--layout-content-pad)}
+.ads-topbar-right{margin-left:auto;display:flex;align-items:center;gap:var(--space-150)}
+.ads-icon-btn{display:grid;place-items:center;width:36px;height:36px;border:none;border-radius:var(--radius-md);background:transparent;color:var(--sys-content-secondary);cursor:pointer}
+.ads-icon-btn:hover{background:var(--sys-background-hover);color:var(--sys-content-primary)}
+.ads-icon-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.ads-avatar-btn{display:grid;place-items:center;width:36px;height:36px;padding:0;border:none;background:transparent;border-radius:var(--radius-pill);cursor:pointer}
+.ads-avatar-btn:hover{background:var(--sys-background-hover)}
+.ads-avatar-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+
+/* 04 · Breadcrumb ------------------------------------------------- */
+.ads-breadcrumb{display:flex;align-items:center;gap:var(--space-200);font:var(--text-body-sm);color:var(--sys-content-secondary)}
+.ads-breadcrumb a{color:var(--sys-content-tertiary);text-decoration:none}
+.ads-breadcrumb a:hover{color:var(--sys-content-primary)}
+.ads-breadcrumb .sep{color:var(--sys-content-tertiary)}
+.ads-breadcrumb [aria-current]{color:var(--sys-content-primary);font-weight:600}
+
+/* 05 · Page Header ------------------------------------------------ */
+.ads-page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-400);margin-bottom:var(--space-600)}
+.ads-page-title{font:var(--text-heading-xl);color:var(--sys-content-primary);margin:0}
+.ads-page-desc{font:var(--text-body-sm);color:var(--sys-content-secondary);margin:var(--space-150) 0 0}
+.ads-page-actions{display:flex;gap:var(--space-200);flex:none}
+
+/* 06 · Tabs ------------------------------------------------------- */
+.ads-tabs{display:flex;gap:var(--space-500);border-bottom:1px solid var(--sys-border-default)}
+.ads-tab{position:relative;display:inline-flex;align-items:center;gap:var(--space-200);height:40px;padding:0 var(--space-100);border:none;background:none;color:var(--sys-content-secondary);font:var(--text-label-md);cursor:pointer}
+.ads-tab:hover{color:var(--sys-content-primary)}
+.ads-tab.is-active{color:var(--sys-content-primary)}
+.ads-tab.is-active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--sys-accent-solid);border-radius:var(--radius-pill)}
+.ads-tab:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus);border-radius:var(--radius-sm)}
+.ads-tab-count{font:var(--text-label-sm);color:var(--sys-content-tertiary)}
+
+/* 07 · Pagination ------------------------------------------------- */
+.ads-pagination{display:flex;align-items:center;gap:var(--space-150);font-variant-numeric:tabular-nums}
+.ads-page-summary{font:var(--text-body-sm);color:var(--sys-content-secondary);margin-right:var(--space-300)}
+.ads-page-btn{min-width:32px;height:32px;padding:0 var(--space-200);border:1px solid transparent;border-radius:var(--radius-md);background:none;color:var(--sys-content-secondary);font:var(--text-label-md);cursor:pointer}
+.ads-page-btn:hover{background:var(--sys-background-hover);color:var(--sys-content-primary)}
+.ads-page-btn.is-current{background:var(--sys-accent-subtle);color:var(--sys-accent-content)}
+.ads-page-btn:disabled{color:var(--sys-content-disabled);cursor:not-allowed}
+.ads-page-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+
+/* 08 · Command Palette -------------------------------------------- */
+.ads-cmdk-scrim{align-items:flex-start;padding-top:12vh}
+.ads-cmdk{width:100%;max-width:560px;background:var(--sys-background-raised);border:1px solid var(--sys-border-default);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);overflow:hidden}
+.ads-cmdk-input{width:100%;height:52px;padding:0 var(--space-500);border:none;border-bottom:1px solid var(--sys-border-subtle);background:transparent;color:var(--sys-content-primary);font:var(--text-body-lg);outline:none}
+.ads-cmdk-list{max-height:360px;overflow:auto;padding:var(--space-200)}
+.ads-cmdk-group{font:var(--text-overline);text-transform:uppercase;color:var(--sys-content-tertiary);padding:var(--space-200) var(--space-300) var(--space-100)}
+.ads-cmdk-item{display:flex;align-items:center;justify-content:space-between;height:40px;padding:0 var(--space-300);border-radius:var(--radius-md);color:var(--sys-content-primary);font:var(--text-body-md);cursor:pointer}
+.ads-cmdk-item.is-active,.ads-cmdk-item:hover{background:var(--sys-accent-subtle);color:var(--sys-accent-content)}
+.ads-cmdk-empty{padding:var(--space-400) var(--space-300);font:var(--text-body-sm);color:var(--sys-content-tertiary);text-align:center}
+
+/* ===================================================================
+   ● 폼 · 입력  (Forms & Input)
+   =================================================================== */
+
+/* 09 · Button ----------------------------------------------------- */
+.ads-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-200);height:40px;padding:0 var(--space-400);border:1px solid transparent;border-radius:var(--radius-md);font:var(--text-label-lg);cursor:pointer;transition:background var(--duration-fast) var(--ease-standard),border-color var(--duration-fast),filter var(--duration-fast)}
+.ads-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.ads-btn:disabled{opacity:.5;cursor:not-allowed}
+.ads-btn-primary{background:var(--sys-accent-solid);color:var(--sys-accent-on-solid)}
+.ads-btn-primary:hover:not(:disabled){background:var(--sys-accent-hover)}
+.ads-btn-primary:active:not(:disabled){background:var(--sys-accent-active)}
+.ads-btn-secondary{background:var(--sys-background-surface);border-color:var(--sys-border-strong);color:var(--sys-content-primary)}
+.ads-btn-secondary:hover:not(:disabled){background:var(--sys-background-hover)}
+.ads-btn-ghost{background:transparent;color:var(--sys-content-secondary)}
+.ads-btn-ghost:hover:not(:disabled){background:var(--sys-background-hover);color:var(--sys-content-primary)}
+.ads-btn-danger{background:var(--sys-status-danger);color:#fff}
+.ads-btn-danger:hover:not(:disabled){filter:brightness(.94)}
+.ads-btn-danger:active:not(:disabled){filter:brightness(.88)}
+.ads-btn-sm{height:32px;padding:0 var(--space-300);font:var(--text-label-md)}
+.ads-btn-lg{height:48px;padding:0 var(--space-500)}
+
+/* 10 · Text Field ------------------------------------------------- */
+.ads-input{width:100%;height:40px;padding:0 var(--space-300);border:1px solid var(--sys-border-strong);border-radius:var(--radius-md);background:var(--sys-background-surface);color:var(--sys-content-primary);font:var(--text-body-md)}
+.ads-input::placeholder{color:var(--sys-content-tertiary)}
+.ads-input:hover{border-color:var(--sys-content-tertiary)}
+.ads-input:focus{outline:none;border-color:var(--sys-border-focus);box-shadow:0 0 0 3px var(--sys-border-focus)}
+.ads-input:disabled{background:var(--sys-background-sunken);color:var(--sys-content-disabled);cursor:not-allowed}
+.ads-input.is-error{border-color:var(--sys-status-danger)}
+.ads-input.is-error:focus{box-shadow:0 0 0 3px var(--sys-status-danger-subtle)}
+
+/* 11 · Textarea --------------------------------------------------- */
+.ads-textarea{height:auto;min-height:96px;padding:var(--space-300);line-height:1.6;resize:vertical}
+
+/* 12 · Select (native) ------------------------------------------- */
+.ads-select-wrap{position:relative}
+.ads-select{appearance:none;padding-right:var(--space-700);cursor:pointer}
+.ads-select-wrap::after{content:"";position:absolute;right:var(--space-300);top:50%;width:8px;height:8px;border-right:2px solid var(--sys-content-tertiary);border-bottom:2px solid var(--sys-content-tertiary);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+
+/* 13 · Custom Dropdown / Combobox -------------------------------- */
+.ads-combobox{position:relative}
+.ads-combo-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;color:var(--sys-content-primary);cursor:pointer}
+.ads-combo-trigger:focus:not(:focus-visible){box-shadow:none;border-color:var(--sys-border-strong)}
+.ads-combo-caret{color:var(--sys-content-tertiary)}
+.ads-combo-pop{position:absolute;z-index:var(--z-dropdown);top:calc(100% + var(--space-100));left:0;right:0;padding:var(--space-150);background:var(--sys-background-raised);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
+.ads-combo-search{margin-bottom:var(--space-150)}
+.ads-combo-opt{display:flex;align-items:center;justify-content:space-between;height:36px;padding:0 var(--space-300);border-radius:var(--radius-md);font:var(--text-body-md);color:var(--sys-content-primary);cursor:pointer}
+.ads-combo-opt:hover{background:var(--sys-background-hover)}
+.ads-combo-opt.is-selected{background:var(--sys-accent-subtle);color:var(--sys-accent-content)}
+.ads-combo-opt.is-active{background:var(--sys-background-hover)}
+.ads-check{color:var(--sys-accent-content)}
+
+/* 14 · Date Picker ------------------------------------------------ */
+.ads-datepicker{position:relative}
+.ads-cal{position:absolute;z-index:var(--z-dropdown);margin-top:var(--space-100);padding:var(--space-300);width:280px;background:var(--sys-background-raised);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
+.ads-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-300);color:var(--sys-content-primary)}
+.ads-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-variant-numeric:tabular-nums}
+.ads-cal-dow{font:var(--text-label-sm);color:var(--sys-content-tertiary);padding:var(--space-150) 0}
+.ads-cal-day{height:34px;border:none;border-radius:var(--radius-md);background:none;color:var(--sys-content-primary);font:var(--text-body-sm);cursor:pointer}
+.ads-cal-day:hover{background:var(--sys-background-hover)}
+.ads-cal-day.is-today{box-shadow:inset 0 0 0 1px var(--sys-accent-muted)}
+.ads-cal-day.is-selected{background:var(--sys-accent-solid);color:var(--sys-accent-on-solid)}
+.ads-cal-day.is-inrange{background:var(--sys-accent-subtle)}
+.ads-date-input{cursor:pointer}
+
+/* 15 · Checkbox --------------------------------------------------- */
+.ads-check-row{display:inline-flex;align-items:center;gap:var(--space-200);cursor:pointer;font:var(--text-body-md);color:var(--sys-content-primary)}
+.ads-checkbox{appearance:none;width:18px;height:18px;border:1px solid var(--sys-border-strong);border-radius:var(--radius-sm);background:var(--sys-background-surface);cursor:pointer;position:relative}
+.ads-checkbox:checked{background:var(--sys-accent-solid);border-color:var(--sys-accent-solid)}
+.ads-checkbox:checked::after{content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;border:solid var(--sys-accent-on-solid);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.ads-checkbox:indeterminate{background:var(--sys-accent-solid);border-color:var(--sys-accent-solid)}
+.ads-checkbox:indeterminate::after{content:"";position:absolute;left:3px;top:7px;width:10px;height:2px;border:none;background:var(--sys-accent-on-solid);transform:none}
+.ads-checkbox:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+
+/* 16 · Radio ------------------------------------------------------ */
+.ads-radio-group{border:none;padding:0;margin:0;display:flex;flex-direction:column;gap:var(--space-200)}
+.ads-radio-row{display:inline-flex;align-items:center;gap:var(--space-200);cursor:pointer;font:var(--text-body-md);color:var(--sys-content-primary)}
+.ads-radio{appearance:none;width:18px;height:18px;border:1px solid var(--sys-border-strong);border-radius:var(--radius-pill);position:relative;cursor:pointer}
+.ads-radio:checked{border-color:var(--sys-accent-solid)}
+.ads-radio:checked::after{content:"";position:absolute;inset:3px;border-radius:var(--radius-pill);background:var(--sys-accent-solid)}
+.ads-radio:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+
+/* 17 · Switch ----------------------------------------------------- */
+.ads-switch-row{display:inline-flex;align-items:center;gap:var(--space-200);font:var(--text-body-md);color:var(--sys-content-primary)}
+.ads-switch{width:40px;height:24px;padding:2px;border:none;border-radius:var(--radius-pill);background:var(--sys-border-strong);cursor:pointer;transition:background var(--duration-fast)}
+.ads-switch[aria-checked="true"]{background:var(--sys-accent-solid)}
+.ads-switch-knob{display:block;width:20px;height:20px;border-radius:var(--radius-pill);background:#fff;box-shadow:var(--shadow-sm);transition:transform var(--duration-fast) var(--ease-standard)}
+.ads-switch[aria-checked="true"] .ads-switch-knob{transform:translateX(16px)}
+.ads-switch:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+
+/* 18 · File Upload ------------------------------------------------ */
+.ads-dropzone{display:flex;flex-direction:column;align-items:center;gap:var(--space-200);padding:var(--space-700);border:1.5px dashed var(--sys-border-strong);border-radius:var(--radius-lg);background:var(--sys-background-sunken);text-align:center;cursor:pointer}
+.ads-dropzone.is-dragover{border-color:var(--sys-accent-solid);background:var(--sys-accent-subtle)}
+.ads-dz-title{font:var(--text-body-md);color:var(--sys-content-primary)}
+.ads-dz-link{color:var(--sys-accent-content);font-weight:600}
+.ads-dz-hint{font:var(--text-caption);color:var(--sys-content-tertiary)}
+.ads-dz-icon{font-size:28px;line-height:1;color:var(--sys-content-tertiary)}
+.ads-visually-hidden{position:absolute;width:1px;height:1px;clip:rect(0 0 0 0);overflow:hidden}
+
+/* 19 · Form Field ------------------------------------------------- */
+.ads-field{display:flex;flex-direction:column;gap:var(--space-150)}
+.ads-label{font:var(--text-label-md);color:var(--sys-content-secondary)}
+.ads-req{color:var(--sys-status-danger)}
+.ads-help{font:var(--text-caption);color:var(--sys-content-tertiary);margin:0}
+.ads-error{font:var(--text-caption);color:var(--sys-status-danger-content);margin:0}
+
+/* 20 · Slider / Range -------------------------------------------- */
+.ads-slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:var(--radius-pill);background:var(--sys-background-sunken);outline:none}
+.ads-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:var(--radius-pill);background:var(--sys-accent-solid);border:2px solid var(--sys-background-surface);box-shadow:var(--shadow-sm);cursor:pointer}
+.ads-slider:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(--sys-border-focus)}
+.ads-slider::-moz-range-thumb{width:18px;height:18px;border-radius:var(--radius-pill);background:var(--sys-accent-solid);border:2px solid var(--sys-background-surface);cursor:pointer}
+
+/* ===================================================================
+   ● 데이터 표시  (Data Display)
+   =================================================================== */
+
+/* 21 · Data Table ------------------------------------------------- */
+.ads-table-wrap{border:1px solid var(--sys-border-default);border-radius:var(--radius-lg);overflow:hidden;background:var(--sys-background-surface)}
+.ads-table{width:100%;border-collapse:collapse;font:var(--text-body-md)}
+.ads-table th{position:sticky;top:0;text-align:left;padding:var(--space-300) var(--space-400);background:var(--sys-background-sunken);color:var(--sys-content-secondary);font:var(--text-label-md);border-bottom:1px solid var(--sys-border-default);white-space:nowrap}
+.ads-table td{padding:var(--space-300) var(--space-400);border-bottom:1px solid var(--sys-border-subtle);color:var(--sys-content-primary);vertical-align:middle}
+.ads-table tbody tr:hover{background:var(--sys-background-hover)}
+.ads-table tr.is-selected{background:var(--sys-accent-subtle)}
+.ads-num{text-align:right;font-variant-numeric:tabular-nums}
+.ads-th-check{width:44px}
+[data-density="compact"] .ads-table td,[data-density="compact"] .ads-table th{padding:var(--space-200) var(--space-400)}
+
+/* 22 · Card / Panel ----------------------------------------------- */
+.ads-card{background:var(--sys-background-surface);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+.ads-card-head{display:flex;align-items:center;justify-content:space-between;padding:var(--space-400) var(--space-600);border-bottom:1px solid var(--sys-border-subtle)}
+.ads-card-title{font:var(--text-heading-sm);color:var(--sys-content-primary);margin:0}
+.ads-card-body{padding:var(--space-600)}
+
+/* 23 · Stat / KPI Card -------------------------------------------- */
+.ads-stat{padding:var(--space-600)}
+.ads-stat-label{font:var(--text-caption);color:var(--sys-content-secondary);margin:0 0 var(--space-200)}
+.ads-stat-value{font:var(--text-heading-xl);color:var(--sys-content-primary);font-variant-numeric:tabular-nums;margin:0}
+.ads-stat-delta{display:flex;align-items:center;gap:var(--space-150);font:var(--text-caption);margin:var(--space-200) 0 0}
+.ads-stat-delta.is-up{color:var(--sys-status-success-content)}
+.ads-stat-delta.is-down{color:var(--sys-status-danger-content)}
+.ads-stat-delta span{color:var(--sys-content-tertiary)}
+
+/* 24 · Badge / Status Pill ---------------------------------------- */
+.ads-badge{display:inline-flex;align-items:center;gap:var(--space-150);height:22px;padding:0 var(--space-200);border-radius:var(--radius-pill);font:var(--text-label-sm);white-space:nowrap}
+.ads-badge-dot{width:6px;height:6px;border-radius:var(--radius-pill);background:currentColor}
+.ads-badge-neutral{background:var(--sys-background-sunken);color:var(--sys-content-secondary)}
+.ads-badge-accent{background:var(--sys-accent-subtle);color:var(--sys-accent-content)}
+.ads-badge-success{background:var(--sys-status-success-subtle);color:var(--sys-status-success-content)}
+.ads-badge-warning{background:var(--sys-status-warning-subtle);color:var(--sys-status-warning-content)}
+.ads-badge-danger{background:var(--sys-status-danger-subtle);color:var(--sys-status-danger-content)}
+.ads-badge-info{background:var(--sys-status-info-subtle);color:var(--sys-status-info-content)}
+
+/* 25 · Tag / Chip ------------------------------------------------- */
+.ads-tag{display:inline-flex;align-items:center;gap:var(--space-150);height:26px;padding:0 var(--space-250,10px);border-radius:var(--radius-pill);background:var(--sys-background-sunken);color:var(--sys-content-secondary);font:var(--text-label-sm);border:1px solid var(--sys-border-default)}
+.ads-tag-x{border:none;background:none;color:var(--sys-content-tertiary);cursor:pointer;font-size:14px;line-height:1}
+.ads-tag-x:hover{color:var(--sys-content-primary)}
+.ads-tag-select{cursor:pointer}
+.ads-tag-select.is-selected{background:var(--sys-accent-subtle);color:var(--sys-accent-content);border-color:var(--sys-accent-muted)}
+
+/* 26 · Avatar / Profile ------------------------------------------- */
+.ads-profile{display:inline-flex;align-items:center;gap:var(--space-300)}
+.ads-avatar{position:relative;display:grid;place-items:center;border-radius:var(--radius-pill);background:var(--sys-accent-subtle);color:var(--sys-accent-content);font:var(--text-label-md);overflow:visible}
+.ads-avatar-xs{width:24px;height:24px}.ads-avatar-sm{width:32px;height:32px}.ads-avatar-md{width:40px;height:40px}.ads-avatar-lg{width:48px;height:48px}
+.ads-avatar-status{position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:var(--radius-pill);background:var(--sys-status-success);box-shadow:0 0 0 2px var(--sys-background-surface)}
+.ads-profile-text{display:flex;flex-direction:column;line-height:1.3}
+.ads-profile-text strong{font:var(--text-label-md);color:var(--sys-content-primary)}
+.ads-profile-text span{font:var(--text-caption);color:var(--sys-content-tertiary)}
+
+/* 27 · Description List ------------------------------------------- */
+.ads-desc{margin:0}
+.ads-desc-row{display:grid;grid-template-columns:140px 1fr;gap:var(--space-400);padding:var(--space-300) 0;border-bottom:1px solid var(--sys-border-subtle)}
+.ads-desc dt{font:var(--text-body-sm);color:var(--sys-content-secondary)}
+.ads-desc dd{font:var(--text-body-md);color:var(--sys-content-primary);margin:0}
+
+/* 28 · Tooltip ---------------------------------------------------- */
+.ads-tip-wrap{position:relative;display:inline-flex}
+.ads-tooltip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);padding:var(--space-150) var(--space-250,10px);background:#181B22;color:#fff;font:var(--text-body-sm);border-radius:var(--radius-md);box-shadow:var(--shadow-md);white-space:nowrap;pointer-events:none}
+[data-theme="dark"] .ads-tooltip{background:#E2E5EB;color:#181B22}
+
+/* 29 · Charts ----------------------------------------------------- */
+.ads-chart{margin:0;padding:var(--space-400);background:var(--sys-background-surface);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg)}
+.ads-bars{display:flex;align-items:flex-end;gap:var(--space-300);height:140px;padding-top:var(--space-300);border-bottom:1px solid var(--viz-grid)}
+.ads-bars span{flex:1;height:var(--h);background:var(--viz-1);border-radius:var(--radius-sm) var(--radius-sm) 0 0;transition:height var(--duration-base) var(--ease-standard)}
+.ads-chart-cap{margin-top:var(--space-200);font:var(--text-caption);color:var(--sys-content-tertiary)}
+
+/* 30 · List ------------------------------------------------------- */
+.ads-list{list-style:none;margin:0;padding:0}
+.ads-list-item{display:flex;align-items:center;gap:var(--space-300);padding:var(--space-300) var(--space-200);border-bottom:1px solid var(--sys-border-subtle)}
+.ads-list-item:hover{background:var(--sys-background-hover)}
+.ads-list-text{flex:1;display:flex;flex-direction:column;line-height:1.4}
+.ads-list-text strong{font:var(--text-label-md);color:var(--sys-content-primary)}
+.ads-list-text span{font:var(--text-body-sm);color:var(--sys-content-secondary)}
+.ads-list-meta{font:var(--text-caption);color:var(--sys-content-tertiary);white-space:nowrap}
+
+/* 31 · Tree ------------------------------------------------------- */
+.ads-tree,.ads-tree ul{list-style:none;margin:0;padding:0}
+.ads-tree-row{display:flex;align-items:center;gap:var(--space-200);height:34px;padding:0 var(--space-300);border-radius:var(--radius-md);color:var(--sys-content-primary);font:var(--text-body-sm);cursor:pointer}
+.ads-tree-row:hover{background:var(--sys-background-hover)}
+.ads-tree-row[aria-current]{background:var(--sys-accent-subtle);color:var(--sys-accent-content)}
+.ads-tree-toggle{width:20px;height:20px;border:none;background:none;color:var(--sys-content-tertiary);cursor:pointer}
+
+/* 32 · Filter Bar / Toolbar --------------------------------------- */
+.ads-toolbar{display:flex;align-items:center;gap:var(--space-200);flex-wrap:wrap;padding:var(--space-300);background:var(--sys-background-surface);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg) var(--radius-lg) 0 0;border-bottom:none}
+.ads-toolbar .ads-search{flex:0 1 280px}
+
+/* ===================================================================
+   ● 피드백 · 오버레이  (Feedback & Overlay)
+   =================================================================== */
+
+/* 33 · Modal / Dialog --------------------------------------------- */
+.ads-scrim{position:fixed;inset:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--space-400);background:var(--sys-background-overlay)}
+.ads-modal{width:100%;max-width:520px;background:var(--sys-background-raised);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);animation:ads-modal-in var(--duration-moderate) var(--ease-enter)}
+.ads-modal-head{display:flex;align-items:center;justify-content:space-between;padding:var(--space-500) var(--space-600) var(--space-300)}
+.ads-modal-title{font:var(--text-heading-lg);color:var(--sys-content-primary);margin:0}
+.ads-modal-body{padding:0 var(--space-600);font:var(--text-body-md);color:var(--sys-content-secondary)}
+.ads-modal-foot{display:flex;justify-content:flex-end;gap:var(--space-200);padding:var(--space-600)}
+@keyframes ads-modal-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+
+/* 34 · Drawer / Side Panel ---------------------------------------- */
+.ads-drawer{position:fixed;top:0;right:0;height:100vh;width:100%;max-width:480px;display:flex;flex-direction:column;background:var(--sys-background-raised);box-shadow:var(--shadow-lg);animation:ads-drawer-in var(--duration-moderate) var(--ease-enter)}
+.ads-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:var(--space-500) var(--space-600);border-bottom:1px solid var(--sys-border-subtle)}
+.ads-drawer-body{flex:1;overflow:auto;padding:var(--space-600)}
+@keyframes ads-drawer-in{from{transform:translateX(100%)}to{transform:none}}
+
+/* 35 · Toast ------------------------------------------------------ */
+.ads-toast{display:flex;align-items:center;gap:var(--space-300);min-width:280px;max-width:420px;padding:var(--space-300) var(--space-400);background:var(--sys-background-raised);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
+.ads-toast-icon{display:grid;place-items:center;width:20px;height:20px;border-radius:var(--radius-pill);color:#fff;font-size:12px;flex:none}
+.ads-toast-success{background:var(--sys-status-success)}
+.ads-toast-error{background:var(--sys-status-danger)}
+.ads-toast-msg{flex:1;font:var(--text-body-md);color:var(--sys-content-primary)}
+
+/* 36 · Inline Alert / Banner -------------------------------------- */
+.ads-alert{display:flex;gap:var(--space-300);padding:var(--space-400);border-radius:var(--radius-lg);font:var(--text-body-sm)}
+.ads-alert-icon{display:grid;place-items:center;width:20px;height:20px;border-radius:var(--radius-pill);font-weight:700;flex:none;color:#fff}
+.ads-alert-content strong{display:block;font:var(--text-label-md);margin-bottom:2px}
+.ads-alert-content p{margin:0}
+.ads-alert-info{background:var(--sys-status-info-subtle);color:var(--sys-status-info-content)}.ads-alert-info .ads-alert-icon{background:var(--sys-status-info)}
+.ads-alert-success{background:var(--sys-status-success-subtle);color:var(--sys-status-success-content)}.ads-alert-success .ads-alert-icon{background:var(--sys-status-success)}
+.ads-alert-warning{background:var(--sys-status-warning-subtle);color:var(--sys-status-warning-content)}.ads-alert-warning .ads-alert-icon{background:var(--sys-status-warning)}
+.ads-alert-danger{background:var(--sys-status-danger-subtle);color:var(--sys-status-danger-content)}.ads-alert-danger .ads-alert-icon{background:var(--sys-status-danger)}
+
+/* 37 · Dropdown Menu ---------------------------------------------- */
+.ads-menu-wrap{position:relative}
+.ads-menu{position:absolute;z-index:var(--z-popover);right:0;top:calc(100% + var(--space-100));min-width:180px;padding:var(--space-150);background:var(--sys-background-raised);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
+.ads-menu-item{display:flex;align-items:center;gap:var(--space-300);width:100%;height:36px;padding:0 var(--space-300);border:none;background:none;border-radius:var(--radius-md);color:var(--sys-content-primary);font:var(--text-label-md);text-align:left;cursor:pointer}
+.ads-menu-item:hover{background:var(--sys-background-hover)}
+.ads-menu-item:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.ads-menu-danger{color:var(--sys-status-danger-content)}
+.ads-menu-sep{height:1px;margin:var(--space-150) 0;background:var(--sys-border-subtle)}
+
+/* 38 · Progress · Spinner ----------------------------------------- */
+.ads-progress{height:8px;border-radius:var(--radius-pill);background:var(--sys-background-sunken);overflow:hidden}
+.ads-progress-fill{height:100%;border-radius:var(--radius-pill);background:linear-gradient(90deg,var(--sys-accent-solid),var(--sys-accent-hover));transition:width var(--duration-base) var(--ease-standard)}
+.ads-spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--sys-border-default);border-top-color:var(--sys-accent-solid);border-radius:var(--radius-pill);animation:ads-spin .7s linear infinite}
+@keyframes ads-spin{to{transform:rotate(360deg)}}
+
+/* 39 · Skeleton Loader -------------------------------------------- */
+.ads-skel{background:linear-gradient(90deg,var(--sys-background-sunken) 25%,var(--sys-background-hover) 37%,var(--sys-background-sunken) 63%);background-size:400% 100%;animation:ads-shimmer 1.4s ease infinite;border-radius:var(--radius-md)}
+.ads-skel-line{height:12px;margin:var(--space-150) 0}
+.ads-skel-circle{width:40px;height:40px;border-radius:var(--radius-pill)}
+.ads-skel-row{display:flex;gap:var(--space-300);align-items:center}
+@keyframes ads-shimmer{from{background-position:100% 0}to{background-position:-100% 0}}
+
+/* 40 · Empty State ------------------------------------------------ */
+.ads-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-200);padding:var(--space-1000) var(--space-600)}
+.ads-empty-icon{font-size:32px;opacity:.7;margin-bottom:var(--space-100)}
+.ads-empty-title{font:var(--text-heading-sm);color:var(--sys-content-primary);margin:0}
+.ads-empty-desc{font:var(--text-body-sm);color:var(--sys-content-secondary);margin:0 0 var(--space-200)}
+
+/* 41 · Popover ---------------------------------------------------- */
+.ads-pop-wrap{position:relative;display:inline-block}
+.ads-popover{position:absolute;z-index:var(--z-popover);top:calc(100% + var(--space-100));left:0;min-width:200px;display:flex;flex-direction:column;gap:var(--space-200);padding:var(--space-300);background:var(--sys-background-raised);border:1px solid var(--sys-border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
+
+/* 42 · Error State ------------------------------------------------ */
+/* Empty State(.ads-empty)의 마크업/토큰을 재사용하고 아이콘·문구·액션만 오류 맥락으로 교체한다. 별도 CSS 불필요. */
+
+/* ===================================================================
+   ● 유틸리티  (Utility)
+   =================================================================== */
+
+/* 43 · Divider ---------------------------------------------------- */
+.ads-divider{border:none;height:1px;background:var(--sys-border-subtle);margin:var(--space-500) 0}
+.ads-divider-label{display:flex;align-items:center;gap:var(--space-300);color:var(--sys-content-tertiary);font:var(--text-caption)}
+.ads-divider-label::before,.ads-divider-label::after{content:"";flex:1;height:1px;background:var(--sys-border-subtle)}
+
+/* 44 · Search Field ----------------------------------------------- */
+.ads-search{position:relative;display:flex;align-items:center}
+.ads-search-icon{position:absolute;left:var(--space-300);color:var(--sys-content-tertiary);pointer-events:none}
+.ads-search-input{padding-left:var(--space-800);padding-right:var(--space-800)}
+.ads-kbd{position:absolute;right:var(--space-300);padding:2px var(--space-150);border:1px solid var(--sys-border-default);border-radius:var(--radius-sm);background:var(--sys-background-sunken);color:var(--sys-content-tertiary);font:var(--text-label-sm)}
+
+/* ===================================================================
+   ● 어드민 특화  (Admin-specific)
+   =================================================================== */
+
+/* 45 · Permission Matrix ------------------------------------------ */
+.ads-matrix td,.ads-matrix th{text-align:center}
+.ads-matrix td:first-child,.ads-matrix th:first-child{text-align:left;font:var(--text-label-md);color:var(--sys-content-secondary)}
+.ads-matrix tbody tr:hover{background:var(--sys-background-hover)}
+
+/* 46 · Timeline / Audit Log --------------------------------------- */
+.ads-timeline{list-style:none;margin:0;padding:0}
+.ads-tl-item{position:relative;display:flex;gap:var(--space-300);padding:0 0 var(--space-500) var(--space-200)}
+.ads-tl-item::before{content:"";position:absolute;left:calc(var(--space-200) + 4px);top:14px;bottom:0;width:1px;background:var(--sys-border-default)}
+.ads-tl-item:last-child::before{display:none}
+.ads-tl-dot{position:relative;z-index:1;flex:none;width:10px;height:10px;margin-top:5px;border-radius:var(--radius-pill);background:var(--sys-accent-solid);box-shadow:0 0 0 3px var(--sys-background-surface)}
+.ads-tl-body p{margin:0;font:var(--text-body-sm);color:var(--sys-content-primary)}
+.ads-tl-time{font:var(--text-caption);color:var(--sys-content-tertiary);font-variant-numeric:tabular-nums}

@@ -1,0 +1,363 @@
+/* ===================================================================
+   Console · Admin Design System — foundation.css   v1.0.0  (2026-07-05)
+   1 file: reference palette + semantic tokens + 5 accent profiles + base.
+   Font: <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.min.css">
+   =================================================================== */
+:root{
+  --font-sans:"Pretendard Variable", Pretendard, -apple-system, "Segoe UI", "Malgun Gothic", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:"JetBrains Mono", "SFMono-Regular", ui-monospace, "D2Coding", Consolas, "Courier New", monospace;
+  --text-display:700 32px/40px var(--font-sans);
+  --text-heading-xl:700 24px/32px var(--font-sans);
+  --text-heading-lg:700 20px/28px var(--font-sans);
+  --text-heading-md:600 18px/26px var(--font-sans);
+  --text-heading-sm:600 16px/24px var(--font-sans);
+  --text-body-lg:400 16px/24px var(--font-sans);
+  --text-body-md:400 14px/22px var(--font-sans);
+  --text-body-sm:400 13px/20px var(--font-sans);
+  --text-label-lg:600 14px/20px var(--font-sans);
+  --text-label-md:600 13px/18px var(--font-sans);
+  --text-label-sm:600 12px/16px var(--font-sans);
+  --text-caption:500 12px/16px var(--font-sans);
+  --text-code:500 13px/20px var(--font-mono);
+  --text-overline:600 12px/16px var(--font-sans);
+  --ref-neutral-0:#FFFFFF;
+  --ref-neutral-50:#F7F8FA;
+  --ref-neutral-100:#EEF0F4;
+  --ref-neutral-200:#E2E5EB;
+  --ref-neutral-300:#CFD4DE;
+  --ref-neutral-400:#AEB4C2;
+  --ref-neutral-500:#868D9E;
+  --ref-neutral-600:#5F6676;
+  --ref-neutral-700:#454B59;
+  --ref-neutral-800:#2E333E;
+  --ref-neutral-850:#23272F;
+  --ref-neutral-900:#181B22;
+  --ref-neutral-950:#0F1116;
+  --ref-neutral-1000:#0A0B0E;
+  --ref-indigo-50:#EEF0FE;
+  --ref-indigo-100:#E0E3FD;
+  --ref-indigo-200:#C4CAFB;
+  --ref-indigo-300:#9DA6F7;
+  --ref-indigo-400:#7681F1;
+  --ref-indigo-500:#5560E8;
+  --ref-indigo-600:#4A4FD1;
+  --ref-indigo-700:#393EAB;
+  --ref-indigo-800:#2D3186;
+  --ref-indigo-900:#22265E;
+  --ref-blue-50:#EAF2FE;
+  --ref-blue-100:#D6E4FD;
+  --ref-blue-200:#ADC8FB;
+  --ref-blue-300:#7FA8F6;
+  --ref-blue-400:#5389F0;
+  --ref-blue-500:#2E6FE8;
+  --ref-blue-600:#1D5FD6;
+  --ref-blue-700:#184EB0;
+  --ref-blue-800:#163F8A;
+  --ref-blue-900:#132F63;
+  --ref-teal-50:#E6F7F4;
+  --ref-teal-100:#C7EEE8;
+  --ref-teal-200:#94DDD3;
+  --ref-teal-300:#5FC7BA;
+  --ref-teal-400:#33AC9E;
+  --ref-teal-500:#12998A;
+  --ref-teal-600:#0E8074;
+  --ref-teal-700:#0B6459;
+  --ref-teal-800:#0B4A43;
+  --ref-teal-900:#0A3A35;
+  --ref-violet-50:#F5EEFE;
+  --ref-violet-100:#EADDFD;
+  --ref-violet-200:#D6BCFA;
+  --ref-violet-300:#BB92F5;
+  --ref-violet-400:#A06BEF;
+  --ref-violet-500:#8A4CE6;
+  --ref-violet-600:#7A3BD6;
+  --ref-violet-700:#6A2FC0;
+  --ref-violet-800:#54239B;
+  --ref-violet-900:#37206B;
+  --ref-green-50:#E7F7EE;
+  --ref-green-100:#C6ECD6;
+  --ref-green-400:#2DBE6E;
+  --ref-green-500:#12A150;
+  --ref-green-600:#0F7D45;
+  --ref-green-700:#0C6238;
+  --ref-amber-50:#FEF4E6;
+  --ref-amber-100:#FCE3BE;
+  --ref-amber-400:#F6B44B;
+  --ref-amber-500:#E8930C;
+  --ref-amber-600:#B4720A;
+  --ref-amber-700:#8A560A;
+  --ref-red-50:#FDECEC;
+  --ref-red-100:#F9CFD0;
+  --ref-red-400:#F26B6F;
+  --ref-red-500:#E5484D;
+  --ref-red-600:#D22C31;
+  --ref-red-700:#A8262A;
+  --ref-sky-50:#EAF2FE;
+  --ref-sky-100:#CFE1FC;
+  --ref-sky-400:#5389F0;
+  --ref-sky-500:#2E6FE8;
+  --ref-sky-600:#1D5FD6;
+  --ref-sky-700:#184EB0;
+  --sys-background-canvas:#F7F8FA;
+  --sys-background-surface:#FFFFFF;
+  --sys-background-raised:#FFFFFF;
+  --sys-background-sunken:#EEF0F4;
+  --sys-background-hover:#EEF0F4;
+  --sys-background-overlay:rgba(15,17,22,0.55);
+  --sys-content-primary:#181B22;
+  --sys-content-secondary:#5F6676;
+  --sys-content-tertiary:#6E7688;
+  --sys-content-disabled:#AEB4C2;
+  --sys-content-inverse:#FFFFFF;
+  --sys-content-accent:#393EAB;
+  --sys-content-on-accent:#FFFFFF;
+  --sys-border-subtle:#EEF0F4;
+  --sys-border-default:#E2E5EB;
+  --sys-border-strong:#868D9E;
+  --sys-border-focus:#4A4FD1;
+  --sys-accent-solid:#4A4FD1;
+  --sys-accent-hover:#393EAB;
+  --sys-accent-active:#2D3186;
+  --sys-accent-subtle:#EEF0FE;
+  --sys-accent-muted:#C4CAFB;
+  --sys-accent-content:#393EAB;
+  --sys-accent-on-solid:#FFFFFF;
+  --sys-status-success:#0F7D45;
+  --sys-status-success-subtle:#E7F7EE;
+  --sys-status-success-content:#0F7D45;
+  --sys-status-warning:#E8930C;
+  --sys-status-warning-subtle:#FEF4E6;
+  --sys-status-warning-content:#96560A;
+  --sys-status-danger:#D22C31;
+  --sys-status-danger-subtle:#FDECEC;
+  --sys-status-danger-content:#C0282D;
+  --sys-status-info:#2E6FE8;
+  --sys-status-info-subtle:#EAF2FE;
+  --sys-status-info-content:#184EB0;
+  --space-50:2px;
+  --space-100:4px;
+  --space-150:6px;
+  --space-200:8px;
+  --space-250:10px;
+  --space-300:12px;
+  --space-400:16px;
+  --space-500:20px;
+  --space-600:24px;
+  --space-700:32px;
+  --space-800:40px;
+  --space-900:48px;
+  --space-1000:64px;
+  --space-1100:80px;
+  --space-1200:96px;
+  --radius-none:0;
+  --radius-xs:4px;
+  --radius-sm:6px;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --radius-xl:16px;
+  --radius-2xl:20px;
+  --radius-pill:9999px;
+  --shadow-xs:0 1px 2px rgba(16,19,26,0.06);
+  --shadow-sm:0 1px 2px rgba(16,19,26,0.06), 0 2px 4px rgba(16,19,26,0.06);
+  --shadow-md:0 2px 4px rgba(16,19,26,0.06), 0 4px 12px rgba(16,19,26,0.08);
+  --shadow-lg:0 4px 8px rgba(16,19,26,0.08), 0 12px 28px rgba(16,19,26,0.12);
+  --shadow-xl:0 24px 56px rgba(16,19,26,0.18);
+  --z-base:0;
+  --z-raised:10;
+  --z-sticky:100;
+  --z-dropdown:1000;
+  --z-overlay:1100;
+  --z-modal:1200;
+  --z-popover:1300;
+  --z-toast:1400;
+  --z-tooltip:1500;
+  --duration-instant:0ms;
+  --duration-fast:120ms;
+  --duration-base:180ms;
+  --duration-moderate:240ms;
+  --duration-slow:320ms;
+  --ease-standard:cubic-bezier(0.2,0,0,1);
+  --ease-enter:cubic-bezier(0,0,0,1);
+  --ease-exit:cubic-bezier(0.3,0,1,1);
+  --layout-sidebar-width:260px;
+  --layout-sidebar-collapsed:72px;
+  --layout-topbar-height:56px;
+  --layout-content-max:1440px;
+  --layout-content-pad:24px;
+  --layout-grid-gutter:24px;
+  --viz-1:#4A4FD1;
+  --viz-2:#0E8074;
+  --viz-3:#E8930C;
+  --viz-4:#7A3BD6;
+  --viz-5:#2E6FE8;
+  --viz-6:#12A150;
+  --viz-7:#E5484D;
+  --viz-8:#5F6676;
+  --viz-grid:#EEF0F4;
+  --viz-axis:#6E7688;
+}
+[data-theme="dark"]{
+  --sys-background-canvas:#0F1116;
+  --sys-background-surface:#181B22;
+  --sys-background-raised:#23272F;
+  --sys-background-sunken:#0A0B0E;
+  --sys-background-hover:#1E222B;
+  --sys-background-overlay:rgba(0,0,0,0.62);
+  --sys-content-primary:#F3F5F8;
+  --sys-content-secondary:#B4BAC7;
+  --sys-content-tertiary:#868D9E;
+  --sys-content-disabled:#454B59;
+  --sys-content-inverse:#181B22;
+  --sys-content-accent:#9DA6F7;
+  --sys-content-on-accent:#0F1116;
+  --sys-border-subtle:#23272F;
+  --sys-border-default:#2E333E;
+  --sys-border-strong:#727A8A;
+  --sys-border-focus:#7681F1;
+  --sys-accent-solid:#7681F1;
+  --sys-accent-hover:#9DA6F7;
+  --sys-accent-active:#C4CAFB;
+  --sys-accent-subtle:#1E2150;
+  --sys-accent-muted:#393EAB;
+  --sys-accent-content:#9DA6F7;
+  --sys-accent-on-solid:#0F1116;
+  --sys-status-success:#2DBE6E;
+  --sys-status-success-subtle:#10281C;
+  --sys-status-success-content:#54D890;
+  --sys-status-warning:#F6B44B;
+  --sys-status-warning-subtle:#33240A;
+  --sys-status-warning-content:#F6B44B;
+  --sys-status-danger:#F26B6F;
+  --sys-status-danger-subtle:#3A1A1B;
+  --sys-status-danger-content:#F58A8D;
+  --sys-status-info:#5389F0;
+  --sys-status-info-subtle:#14284B;
+  --sys-status-info-content:#7FA8F6;
+  --shadow-xs:0 1px 2px rgba(0,0,0,0.5);
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.5);
+  --shadow-md:0 2px 6px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.55);
+  --shadow-lg:0 8px 20px rgba(0,0,0,0.55), 0 20px 40px rgba(0,0,0,0.6);
+  --shadow-xl:0 28px 64px rgba(0,0,0,0.65);
+  --viz-grid:#23272F;
+  --viz-axis:#868D9E;
+}
+[data-accent="indigo"]{
+  --sys-accent-solid:#4A4FD1;
+  --sys-accent-hover:#393EAB;
+  --sys-accent-active:#2D3186;
+  --sys-accent-subtle:#EEF0FE;
+  --sys-accent-muted:#C4CAFB;
+  --sys-accent-content:#393EAB;
+  --sys-accent-on-solid:#FFFFFF;
+  --sys-border-focus:#4A4FD1;
+  --sys-content-accent:#393EAB;
+}
+[data-theme="dark"][data-accent="indigo"]{
+  --sys-accent-solid:#7681F1;
+  --sys-accent-hover:#9DA6F7;
+  --sys-accent-active:#C4CAFB;
+  --sys-accent-subtle:#1E2150;
+  --sys-accent-muted:#393EAB;
+  --sys-accent-content:#9DA6F7;
+  --sys-accent-on-solid:#0F1116;
+  --sys-border-focus:#7681F1;
+  --sys-content-accent:#9DA6F7;
+}
+[data-accent="blue"]{
+  --sys-accent-solid:#1D5FD6;
+  --sys-accent-hover:#184EB0;
+  --sys-accent-active:#163F8A;
+  --sys-accent-subtle:#EAF2FE;
+  --sys-accent-muted:#ADC8FB;
+  --sys-accent-content:#184EB0;
+  --sys-accent-on-solid:#FFFFFF;
+  --sys-border-focus:#1D5FD6;
+  --sys-content-accent:#184EB0;
+}
+[data-theme="dark"][data-accent="blue"]{
+  --sys-accent-solid:#5389F0;
+  --sys-accent-hover:#7FA8F6;
+  --sys-accent-active:#ADC8FB;
+  --sys-accent-subtle:#132F63;
+  --sys-accent-muted:#184EB0;
+  --sys-accent-content:#7FA8F6;
+  --sys-accent-on-solid:#0F1116;
+  --sys-border-focus:#5389F0;
+  --sys-content-accent:#7FA8F6;
+}
+[data-accent="teal"]{
+  --sys-accent-solid:#0E8074;
+  --sys-accent-hover:#0B6459;
+  --sys-accent-active:#0B4A43;
+  --sys-accent-subtle:#E6F7F4;
+  --sys-accent-muted:#94DDD3;
+  --sys-accent-content:#0B6459;
+  --sys-accent-on-solid:#FFFFFF;
+  --sys-border-focus:#0E8074;
+  --sys-content-accent:#0B6459;
+}
+[data-theme="dark"][data-accent="teal"]{
+  --sys-accent-solid:#33AC9E;
+  --sys-accent-hover:#5FC7BA;
+  --sys-accent-active:#94DDD3;
+  --sys-accent-subtle:#0B4A43;
+  --sys-accent-muted:#0B6459;
+  --sys-accent-content:#5FC7BA;
+  --sys-accent-on-solid:#0F1116;
+  --sys-border-focus:#33AC9E;
+  --sys-content-accent:#5FC7BA;
+}
+[data-accent="violet"]{
+  --sys-accent-solid:#7A3BD6;
+  --sys-accent-hover:#6A2FC0;
+  --sys-accent-active:#54239B;
+  --sys-accent-subtle:#F5EEFE;
+  --sys-accent-muted:#D6BCFA;
+  --sys-accent-content:#6A2FC0;
+  --sys-accent-on-solid:#FFFFFF;
+  --sys-border-focus:#7A3BD6;
+  --sys-content-accent:#6A2FC0;
+}
+[data-theme="dark"][data-accent="violet"]{
+  --sys-accent-solid:#A06BEF;
+  --sys-accent-hover:#BB92F5;
+  --sys-accent-active:#D6BCFA;
+  --sys-accent-subtle:#37206B;
+  --sys-accent-muted:#6A2FC0;
+  --sys-accent-content:#BB92F5;
+  --sys-accent-on-solid:#0F1116;
+  --sys-border-focus:#A06BEF;
+  --sys-content-accent:#BB92F5;
+}
+[data-accent="neutral"]{
+  --sys-accent-solid:#2E333E;
+  --sys-accent-hover:#181B22;
+  --sys-accent-active:#0A0B0E;
+  --sys-accent-subtle:#EEF0F4;
+  --sys-accent-muted:#CFD4DE;
+  --sys-accent-content:#2E333E;
+  --sys-accent-on-solid:#FFFFFF;
+  --sys-border-focus:#2E333E;
+  --sys-content-accent:#2E333E;
+}
+[data-theme="dark"][data-accent="neutral"]{
+  --sys-accent-solid:#E2E5EB;
+  --sys-accent-hover:#F3F5F8;
+  --sys-accent-active:#FFFFFF;
+  --sys-accent-subtle:#23272F;
+  --sys-accent-muted:#454B59;
+  --sys-accent-content:#CFD4DE;
+  --sys-accent-on-solid:#181B22;
+  --sys-border-focus:#E2E5EB;
+  --sys-content-accent:#CFD4DE;
+}
+/* base ------------------------------------------------------------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--sys-background-canvas);color:var(--sys-content-primary);font:var(--text-body-md);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,figure{margin:0}
+a{color:var(--sys-accent-content);text-decoration:none}a:hover{text-decoration:underline}
+button{font-family:inherit}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.ads-num,[data-tabular]{font-variant-numeric:tabular-nums}
+.ads-overline{letter-spacing:.06em;text-transform:uppercase}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}

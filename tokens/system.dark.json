@@ -1,0 +1,51 @@
+{
+  "$description": "Console ADS — semantic tokens (--sys-*), Dark theme overrides. Applied via [data-theme=\"dark\"]. Same token names as Light, different values (principle 02: one surface, two themes). Shadows also darken.",
+  "$version": "1.0.0",
+  "$theme": "dark",
+  "background": {
+    "canvas": "#0F1116",
+    "surface": "#181B22",
+    "raised": "#23272F",
+    "sunken": "#0A0B0E",
+    "hover": "#1E222B",
+    "overlay": "rgba(0,0,0,0.62)"
+  },
+  "content": {
+    "primary": "#F3F5F8",
+    "secondary": "#B4BAC7",
+    "tertiary": "#868D9E",
+    "disabled": "#454B59",
+    "inverse": "#181B22",
+    "accent": "#9DA6F7",
+    "on-accent": "#0F1116"
+  },
+  "border": {
+    "subtle": "#23272F",
+    "default": "#2E333E",
+    "strong": "#727A8A",
+    "focus": "#7681F1"
+  },
+  "accent": {
+    "solid": "#7681F1",
+    "hover": "#9DA6F7",
+    "active": "#C4CAFB",
+    "subtle": "#1E2150",
+    "muted": "#393EAB",
+    "content": "#9DA6F7",
+    "on-solid": "#0F1116"
+  },
+  "status": {
+    "success": "#2DBE6E", "success-subtle": "#10281C", "success-content": "#54D890",
+    "warning": "#F6B44B", "warning-subtle": "#33240A", "warning-content": "#F6B44B",
+    "danger":  "#F26B6F", "danger-subtle":  "#3A1A1B", "danger-content":  "#F58A8D",
+    "info":    "#5389F0", "info-subtle":    "#14284B", "info-content":    "#7FA8F6"
+  },
+  "shadow": {
+    "xs": "0 1px 2px rgba(0,0,0,0.5)",
+    "sm": "0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.5)",
+    "md": "0 2px 6px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.55)",
+    "lg": "0 8px 20px rgba(0,0,0,0.55), 0 20px 40px rgba(0,0,0,0.6)",
+    "xl": "0 28px 64px rgba(0,0,0,0.65)"
+  },
+  "viz": { "grid": "#23272F", "axis": "#868D9E" }
+}

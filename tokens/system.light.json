@@ -1,0 +1,48 @@
+{
+  "$description": "Console ADS — semantic tokens (--sys-*), Light theme. This is :root. UI references THESE, never --ref-*. Accent slots hold the default (indigo) profile; profiles.json remaps them per [data-accent].",
+  "$version": "1.0.0",
+  "$theme": "light",
+  "background": {
+    "canvas": "#F7F8FA",
+    "surface": "#FFFFFF",
+    "raised": "#FFFFFF",
+    "sunken": "#EEF0F4",
+    "hover": "#EEF0F4",
+    "overlay": "rgba(15,17,22,0.55)"
+  },
+  "content": {
+    "primary": "#181B22",
+    "secondary": "#5F6676",
+    "tertiary": "#6E7688",
+    "disabled": "#AEB4C2",
+    "inverse": "#FFFFFF",
+    "accent": "#393EAB",
+    "on-accent": "#FFFFFF"
+  },
+  "border": {
+    "subtle": "#EEF0F4",
+    "default": "#E2E5EB",
+    "strong": "#868D9E",
+    "focus": "#4A4FD1"
+  },
+  "accent": {
+    "solid": "#4A4FD1",
+    "hover": "#393EAB",
+    "active": "#2D3186",
+    "subtle": "#EEF0FE",
+    "muted": "#C4CAFB",
+    "content": "#393EAB",
+    "on-solid": "#FFFFFF"
+  },
+  "status": {
+    "success": "#0F7D45", "success-subtle": "#E7F7EE", "success-content": "#0F7D45",
+    "warning": "#E8930C", "warning-subtle": "#FEF4E6", "warning-content": "#96560A",
+    "danger":  "#D22C31", "danger-subtle":  "#FDECEC", "danger-content":  "#C0282D",
+    "info":    "#2E6FE8", "info-subtle":    "#EAF2FE", "info-content":    "#184EB0"
+  },
+  "viz": {
+    "1": "#4A4FD1", "2": "#0E8074", "3": "#E8930C", "4": "#7A3BD6",
+    "5": "#2E6FE8", "6": "#12A150", "7": "#E5484D", "8": "#5F6676",
+    "grid": "#EEF0F4", "axis": "#6E7688"
+  }
+}
