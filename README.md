@@ -1,7 +1,7 @@
 # Console · Admin Design System
 
 **PC 어드민을 위한 독립 디자인 시스템** — 깔끔하고, 밀도 높고, 일관된 콘솔.
-`v1.0.0` · 46 컴포넌트 · 3-tier 토큰 · 5색 프로필 × Light/Dark · WCAG 2.2 AA
+`v1.0.0` · 46 컴포넌트 · 3-tier 토큰 · 8색 프로필 × Light/Dark · WCAG 2.2 AA
 
 빌드가 필요 없는 **정적 사이트**입니다 (vanilla HTML/CSS/JS). `index.html`을 열면 전 컴포넌트를 라이브로 확인할 수 있고, GitHub Pages로 그대로 배포됩니다.
 
@@ -18,11 +18,11 @@ python -m http.server 8080
 npx serve .
 ```
 
-브라우저에서 `http://localhost:8080` → 상단 스위처로 **Theme / Accent / Density**를 바꿔 5색 × Light/Dark = 10조합을 눈으로 검증하세요. `⌘K` / `Ctrl+K`로 커맨드 팔레트가 열립니다.
+브라우저에서 `http://localhost:8080` → 상단 스위처로 **Theme / Accent / Density**를 바꿔 8색 × Light/Dark = 16조합을 눈으로 검증하세요. `examples/dashboard.html`에서 실제 조립 화면(대시보드) 예시도 볼 수 있습니다. `⌘K` / `Ctrl+K`로 커맨드 팔레트가 열립니다.
 
 ## 핵심 원리 — 색을 "갈아끼운다"
 
-컴포넌트 CSS는 특정 색(indigo 등)을 **절대 직접 참조하지 않습니다.** 오직 `--sys-accent-*`만 씁니다. 밝기는 `data-theme`, 강조색은 `data-accent`로 **직교(orthogonal)** 제어되므로, 속성 두 개만 바꾸면 컴포넌트 수정 없이 5색 × 2모드가 나옵니다.
+컴포넌트 CSS는 특정 색(indigo 등)을 **절대 직접 참조하지 않습니다.** 오직 `--sys-accent-*`만 씁니다. 밝기는 `data-theme`, 강조색은 `data-accent`로 **직교(orthogonal)** 제어되므로, 속성 두 개만 바꾸면 컴포넌트 수정 없이 8색 × 2모드가 나옵니다.
 
 ```html
 <html data-theme="light" data-accent="indigo">   <!-- 기본 -->
@@ -31,7 +31,7 @@ npx serve .
 
 ```js
 document.documentElement.dataset.theme  = "dark";  // light | dark
-document.documentElement.dataset.accent = "teal";  // indigo | blue | teal | violet | neutral
+document.documentElement.dataset.accent = "teal";  // indigo | blue | teal | green | amber | rose | violet | neutral
 ```
 
 사용자 선택값은 `localStorage`에 저장되어 재방문 시 복원됩니다 (`assets/js/app.js`).
@@ -43,7 +43,7 @@ admin_design_system/
 ├─ index.html                  # 데모 카탈로그 (전 컴포넌트 라이브 미리보기)
 ├─ assets/
 │  ├─ css/
-│  │  ├─ foundation.css         # 토큰(ref/sys) · 5색 프로필 · reset · base
+│  │  ├─ foundation.css         # 토큰(ref/sys) · 8색 프로필 · reset · base
 │  │  └─ components.css         # 46개 컴포넌트 CSS
 │  └─ js/
 │     └─ app.js                 # 테마/accent/density 토글 + 컴포넌트 동작
@@ -85,7 +85,7 @@ admin_design_system/
 2. **Settings → Pages → Build and deployment → Source: GitHub Actions** 선택.
 3. `main`에 push하면 `.github/workflows/pages.yml`이 자동 배포합니다.
    - (액션 대신) *Deploy from a branch → main / (root)* 도 가능 — 빌드가 없으므로 루트를 그대로 서빙합니다.
-4. 배포 URL에서 5색 × Light/Dark 대비·여백·상태를 육안 검증하세요.
+4. 배포 URL에서 8색 × Light/Dark 대비·여백·상태를 육안 검증하세요.
 
 ## 여덟 가지 원칙 (요약)
 

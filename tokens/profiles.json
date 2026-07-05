@@ -15,6 +15,18 @@
       "light": { "accent-solid": "#0E8074", "accent-hover": "#0B6459", "accent-active": "#0B4A43", "accent-subtle": "#E6F7F4", "accent-muted": "#94DDD3", "accent-content": "#0B6459", "accent-on-solid": "#FFFFFF", "border-focus": "#0E8074", "content-accent": "#0B6459" },
       "dark":  { "accent-solid": "#33AC9E", "accent-hover": "#5FC7BA", "accent-active": "#94DDD3", "accent-subtle": "#0B4A43", "accent-muted": "#0B6459", "accent-content": "#5FC7BA", "accent-on-solid": "#0F1116", "border-focus": "#33AC9E", "content-accent": "#5FC7BA" }
     },
+    "green": {
+      "light": { "accent-solid": "#0F7D45", "accent-hover": "#0C6238", "accent-active": "#0A5230", "accent-subtle": "#E7F7EE", "accent-muted": "#A7E0BF", "accent-content": "#0C6238", "accent-on-solid": "#FFFFFF", "border-focus": "#0F7D45", "content-accent": "#0C6238" },
+      "dark":  { "accent-solid": "#2DBE6E", "accent-hover": "#54D890", "accent-active": "#8CE8B5", "accent-subtle": "#10281C", "accent-muted": "#0F7D45", "accent-content": "#54D890", "accent-on-solid": "#0F1116", "border-focus": "#2DBE6E", "content-accent": "#54D890" }
+    },
+    "amber": {
+      "light": { "accent-solid": "#E8930C", "accent-hover": "#CE820B", "accent-active": "#B4720A", "accent-subtle": "#FEF4E6", "accent-muted": "#FAD79A", "accent-content": "#8A560A", "accent-on-solid": "#181B22", "border-focus": "#E8930C", "content-accent": "#8A560A" },
+      "dark":  { "accent-solid": "#F6B44B", "accent-hover": "#FAC978", "accent-active": "#FCE3BE", "accent-subtle": "#33240A", "accent-muted": "#8A560A", "accent-content": "#F6B44B", "accent-on-solid": "#0F1116", "border-focus": "#F6B44B", "content-accent": "#F6B44B" }
+    },
+    "rose": {
+      "light": { "accent-solid": "#C31D5E", "accent-hover": "#A81652", "accent-active": "#8C1044", "accent-subtle": "#FDEAF1", "accent-muted": "#F4B6CE", "accent-content": "#A81652", "accent-on-solid": "#FFFFFF", "border-focus": "#C31D5E", "content-accent": "#A81652" },
+      "dark":  { "accent-solid": "#EC5C8E", "accent-hover": "#F285A9", "accent-active": "#F7B3C9", "accent-subtle": "#3A1526", "accent-muted": "#8C1044", "accent-content": "#F285A9", "accent-on-solid": "#0F1116", "border-focus": "#EC5C8E", "content-accent": "#F285A9" }
+    },
     "violet": {
       "light": { "accent-solid": "#7A3BD6", "accent-hover": "#6A2FC0", "accent-active": "#54239B", "accent-subtle": "#F5EEFE", "accent-muted": "#D6BCFA", "accent-content": "#6A2FC0", "accent-on-solid": "#FFFFFF", "border-focus": "#7A3BD6", "content-accent": "#6A2FC0" },
       "dark":  { "accent-solid": "#A06BEF", "accent-hover": "#BB92F5", "accent-active": "#D6BCFA", "accent-subtle": "#37206B", "accent-muted": "#6A2FC0", "accent-content": "#BB92F5", "accent-on-solid": "#0F1116", "border-focus": "#A06BEF", "content-accent": "#BB92F5" }

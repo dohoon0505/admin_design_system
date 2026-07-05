@@ -18,7 +18,7 @@ AI 에이전트·기여자의 진입점. **컴포넌트를 추가·수정하기 
 
 | 파일 | 역할 | 편집 시 |
 |------|------|--------|
-| `assets/css/foundation.css` | 토큰(ref/sys) · 5색 프로필 · reset | 값 바꾸면 `tokens/*.json`도 함께 갱신 |
+| `assets/css/foundation.css` | 토큰(ref/sys) · 8색 프로필 · reset | 값 바꾸면 `tokens/*.json`도 함께 갱신 |
 | `assets/css/components.css` | 46개 컴포넌트, `ads-` 접두사 | 새 컴포넌트는 해당 군 주석 아래 추가 |
 | `assets/js/app.js` | 테마/accent/density + 오버레이·팝오버·탭 동작 | 이벤트 위임 패턴 유지 |
 | `index.html` | 데모 카탈로그 | 새 컴포넌트는 `.spec` 카드로 전 변형·전 상태 노출 |
@@ -53,7 +53,7 @@ AI 에이전트·기여자의 진입점. **컴포넌트를 추가·수정하기 
 3. `index.html`에 `.spec` 카드를 만들어 전 변형·전 상태를 라이브로 노출.
 4. 상호작용이 있으면 `app.js`에 이벤트 위임 핸들러 추가 (전역 리스너에 분기).
 5. 접근성: 시맨틱 태그 + 필요한 `aria-*`, 키보드 흐름(Tab·Esc·화살표) 검증.
-6. 5색 × Light/Dark 에서 대비·여백이 무너지지 않는지 확인.
+6. 8색 × Light/Dark 에서 대비·여백이 무너지지 않는지 확인.
 
 ## 안티디자인 규정 (요약 — 생성형 결과의 나쁜 습관 차단)
 
@@ -74,4 +74,4 @@ AI 에이전트·기여자의 진입점. **컴포넌트를 추가·수정하기 
 - [ ] hex/px 하드코딩 없이 100% 토큰 참조인가?
 - [ ] `hover · focus-visible · active · disabled` 4상태가 모두 있는가? 포커스 링을 지우지 않았는가?
 - [ ] 데이터 화면에 loading(Skeleton) · empty(Empty State) · error가 있는가?
-- [ ] Light/Dark, 5개 accent 모두에서 대비가 무너지지 않는가?
+- [ ] Light/Dark, 8개 accent(indigo·blue·teal·green·amber·rose·violet·neutral) 모두에서 대비가 무너지지 않는가?

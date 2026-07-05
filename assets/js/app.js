@@ -20,6 +20,7 @@
     document.querySelectorAll("[data-ads-" + attr + "]").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-ads-" + attr) === value));
     });
+    if (attr === "theme") document.querySelectorAll('[data-ads-theme="toggle"]').forEach(function (b) { b.textContent = value === "dark" ? "☀" : "☾"; });
   }
   function restore() {
     var t, a, d;
@@ -109,7 +110,12 @@
   document.addEventListener("click", function (e) {
     var t = e.target;
 
-    var themeBtn = t.closest("[data-ads-theme]"); if (themeBtn) { apply("theme", themeBtn.getAttribute("data-ads-theme")); return; }
+    var themeBtn = t.closest("[data-ads-theme]");
+    if (themeBtn) {
+      var tv = themeBtn.getAttribute("data-ads-theme");
+      if (tv === "toggle") tv = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      apply("theme", tv); return;
+    }
     var accentBtn = t.closest("[data-ads-accent]"); if (accentBtn) { apply("accent", accentBtn.getAttribute("data-ads-accent")); return; }
     var densBtn = t.closest("[data-ads-density]"); if (densBtn) { apply("density", densBtn.getAttribute("data-ads-density")); return; }
 
@@ -335,4 +341,45 @@
       master.checked = on === all.length; master.indeterminate = on > 0 && on < all.length;
     });
   });
+
+  /* ---- 10. Demo catalog TOC: filter + scrollspy (demo chrome) ----- */
+  (function tocInit() {
+    var toc = document.querySelector(".demo-toc");
+    if (!toc) return;
+    var filter = toc.querySelector(".demo-toc-filter");
+    var emptyMsg = toc.querySelector(".toc-empty");
+
+    if (filter) filter.addEventListener("input", function () {
+      var q = filter.value.trim().toLowerCase();
+      var anyGlobal = false;
+      toc.querySelectorAll(".toc-grp").forEach(function (grp) {
+        var any = false;
+        grp.querySelectorAll(".toc-links a").forEach(function (a) {
+          var m = a.textContent.toLowerCase().indexOf(q) !== -1;
+          a.style.display = m ? "" : "none"; if (m) any = true;
+        });
+        grp.style.display = any ? "" : "none";
+        if (any && q) grp.open = true;
+        if (any) anyGlobal = true;
+      });
+      if (emptyMsg) emptyMsg.style.display = anyGlobal ? "none" : "block";
+    });
+
+    var byId = {};
+    toc.querySelectorAll(".toc-links a").forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var sections = Object.keys(byId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    if ("IntersectionObserver" in window && sections.length) {
+      var current = null;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          var a = byId[en.target.id]; if (!a) return;
+          if (current) current.classList.remove("is-current");
+          a.classList.add("is-current"); current = a;
+          var grp = a.closest(".toc-grp"); if (grp && !grp.open) grp.open = true;
+        });
+      }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+      sections.forEach(function (s) { io.observe(s); });
+    }
+  })();
 })();

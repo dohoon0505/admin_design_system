@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Console · Admin Design System</title>
-<meta name="description" content="PC 어드민을 위한 독립 디자인 시스템 — 46 컴포넌트 · 3-tier 토큰 · 5색 프로필 × Light/Dark · WCAG 2.2 AA.">
+<meta name="description" content="PC 어드민을 위한 독립 디자인 시스템 — 46 컴포넌트 · 3-tier 토큰 · 8색 프로필 × Light/Dark · WCAG 2.2 AA.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234A4FD1'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@2.304/web/jetbrains-mono.css">
@@ -31,13 +31,27 @@
 .accent-picker button .dot{display:block;width:100%;height:100%;border-radius:var(--radius-pill);box-shadow:inset 0 0 0 1px var(--sys-border-default)}
 .accent-picker button[aria-pressed="true"]{border-color:var(--sys-content-primary)}
 .accent-picker button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
-.dot-indigo{background:var(--ref-indigo-600)}.dot-blue{background:var(--ref-blue-600)}.dot-teal{background:var(--ref-teal-600)}.dot-violet{background:var(--ref-violet-600)}.dot-neutral{background:var(--ref-neutral-800)}
+.dot-indigo{background:var(--ref-indigo-600)}.dot-blue{background:var(--ref-blue-600)}.dot-teal{background:var(--ref-teal-600)}.dot-green{background:var(--ref-green-600)}.dot-amber{background:var(--ref-amber-500)}.dot-rose{background:var(--ref-rose-500)}.dot-violet{background:var(--ref-violet-600)}.dot-neutral{background:var(--ref-neutral-800)}
 
 .demo-layout{display:grid;grid-template-columns:248px 1fr;max-width:var(--layout-content-max);margin:0 auto}
-.demo-toc{position:sticky;top:calc(var(--layout-topbar-height) + var(--space-300));align-self:start;max-height:calc(100vh - var(--layout-topbar-height) - var(--space-600));overflow:auto;padding:var(--space-600) var(--space-400);display:flex;flex-direction:column;gap:var(--space-100)}
-.demo-toc .grp{font:var(--text-overline);letter-spacing:.06em;text-transform:uppercase;color:var(--sys-content-tertiary);padding:var(--space-400) var(--space-300) var(--space-150)}
-.demo-toc a{padding:var(--space-150) var(--space-300);border-radius:var(--radius-md);color:var(--sys-content-secondary);font:var(--text-body-sm);text-decoration:none}
-.demo-toc a:hover{background:var(--sys-background-hover);color:var(--sys-content-primary);text-decoration:none}
+.demo-toc{position:sticky;top:calc(var(--layout-topbar-height) + var(--space-200));align-self:start;max-height:calc(100vh - var(--layout-topbar-height) - var(--space-400));overflow:auto;padding:var(--space-400) var(--space-300) var(--space-800);display:flex;flex-direction:column;gap:2px}
+.demo-toc-filter{height:34px;margin-bottom:var(--space-200);font:var(--text-body-sm)}
+.demo-toc>a{padding:var(--space-200) var(--space-300);border-radius:var(--radius-md);color:var(--sys-content-secondary);font:var(--text-label-md);text-decoration:none}
+.demo-toc>a:hover{background:var(--sys-background-hover);color:var(--sys-content-primary);text-decoration:none}
+.demo-toc>a.toc-cta{display:flex;align-items:center;gap:var(--space-200);color:var(--sys-accent-content);background:var(--sys-accent-subtle);margin-bottom:var(--space-150)}
+.toc-grp{border-radius:var(--radius-md)}
+.toc-grp>summary{list-style:none;display:flex;align-items:center;gap:var(--space-200);cursor:pointer;padding:var(--space-200) var(--space-300);border-radius:var(--radius-md);font:var(--text-overline);letter-spacing:.06em;text-transform:uppercase;color:var(--sys-content-tertiary);user-select:none}
+.toc-grp>summary::-webkit-details-marker{display:none}
+.toc-grp>summary::marker{content:""}
+.toc-grp>summary:hover{background:var(--sys-background-hover);color:var(--sys-content-secondary)}
+.toc-grp>summary .cnt{font:var(--text-label-sm);color:var(--sys-content-disabled);letter-spacing:0;text-transform:none}
+.toc-grp>summary .chev{margin-left:auto;color:var(--sys-content-tertiary);transition:transform var(--duration-fast) var(--ease-standard)}
+.toc-grp[open]>summary .chev{transform:rotate(90deg)}
+.toc-links{display:flex;flex-direction:column;gap:1px;padding:2px 0 var(--space-200) var(--space-200)}
+.toc-links a{padding:var(--space-150) var(--space-300);border-radius:var(--radius-sm);color:var(--sys-content-secondary);font:var(--text-body-sm);text-decoration:none;border-left:2px solid transparent}
+.toc-links a:hover{background:var(--sys-background-hover);color:var(--sys-content-primary);text-decoration:none}
+.toc-links a.is-current{color:var(--sys-accent-content);background:var(--sys-accent-subtle);border-left-color:var(--sys-accent-solid);font-weight:600}
+.toc-empty{display:none;padding:var(--space-300);font:var(--text-caption);color:var(--sys-content-tertiary)}
 .demo-main{min-width:0;padding:var(--space-700) var(--space-800) var(--space-1200)}
 .demo-hero{margin-bottom:var(--space-900)}
 .demo-hero h1{font:var(--text-display);color:var(--sys-content-primary);margin:0 0 var(--space-300)}
@@ -107,6 +121,9 @@
         <button type="button" data-ads-accent="indigo" aria-label="Indigo"><span class="dot dot-indigo"></span></button>
         <button type="button" data-ads-accent="blue" aria-label="Blue"><span class="dot dot-blue"></span></button>
         <button type="button" data-ads-accent="teal" aria-label="Teal"><span class="dot dot-teal"></span></button>
+        <button type="button" data-ads-accent="green" aria-label="Green"><span class="dot dot-green"></span></button>
+        <button type="button" data-ads-accent="amber" aria-label="Amber"><span class="dot dot-amber"></span></button>
+        <button type="button" data-ads-accent="rose" aria-label="Rose"><span class="dot dot-rose"></span></button>
         <button type="button" data-ads-accent="violet" aria-label="Violet"><span class="dot dot-violet"></span></button>
         <button type="button" data-ads-accent="neutral" aria-label="Neutral"><span class="dot dot-neutral"></span></button>
       </div>
@@ -125,29 +142,56 @@
 <div class="demo-layout">
 <!-- ============ Table of contents ============ -->
 <nav class="demo-toc" aria-label="목차">
-  <a href="#foundation">Foundation</a>
-  <p class="grp">레이아웃 · 내비</p>
-  <a href="#c-01">01 App Shell</a><a href="#c-02">02 Sidebar</a><a href="#c-03">03 Topbar</a><a href="#c-04">04 Breadcrumb</a><a href="#c-05">05 Page Header</a><a href="#c-06">06 Tabs</a><a href="#c-07">07 Pagination</a><a href="#c-08">08 Command Palette</a>
-  <p class="grp">폼 · 입력</p>
-  <a href="#c-09">09 Button</a><a href="#c-10">10 Text Field</a><a href="#c-11">11 Textarea</a><a href="#c-12">12 Select</a><a href="#c-13">13 Combobox</a><a href="#c-14">14 Date Picker</a><a href="#c-15">15 Checkbox</a><a href="#c-16">16 Radio</a><a href="#c-17">17 Switch</a><a href="#c-18">18 File Upload</a><a href="#c-19">19 Form Field</a><a href="#c-20">20 Slider</a>
-  <p class="grp">데이터 표시</p>
-  <a href="#c-21">21 Data Table</a><a href="#c-22">22 Card</a><a href="#c-23">23 Stat / KPI</a><a href="#c-24">24 Badge</a><a href="#c-25">25 Tag / Chip</a><a href="#c-26">26 Avatar</a><a href="#c-27">27 Description List</a><a href="#c-28">28 Tooltip</a><a href="#c-29">29 Charts</a><a href="#c-30">30 List</a><a href="#c-31">31 Tree</a><a href="#c-32">32 Filter Bar</a>
-  <p class="grp">피드백 · 오버레이</p>
-  <a href="#c-33">33 Modal</a><a href="#c-34">34 Drawer</a><a href="#c-35">35 Toast</a><a href="#c-36">36 Alert</a><a href="#c-37">37 Dropdown Menu</a><a href="#c-38">38 Progress</a><a href="#c-39">39 Skeleton</a><a href="#c-40">40 Empty State</a><a href="#c-41">41 Popover</a><a href="#c-42">42 Error State</a>
-  <p class="grp">유틸 · 어드민</p>
-  <a href="#c-43">43 Divider</a><a href="#c-44">44 Search Field</a><a href="#c-45">45 Permission Matrix</a><a href="#c-46">46 Timeline</a>
+  <input type="search" class="ads-input demo-toc-filter" placeholder="컴포넌트 검색…" aria-label="컴포넌트 검색">
+  <a class="toc-cta" href="examples/dashboard.html">화면 예시 · 대시보드 <span aria-hidden="true" style="margin-left:auto">↗</span></a>
+  <a href="#foundation">Foundation · 토큰</a>
+  <details class="toc-grp" open>
+    <summary>레이아웃 · 내비 <span class="cnt">8</span><span class="chev" aria-hidden="true">›</span></summary>
+    <div class="toc-links">
+      <a href="#c-01">01 App Shell</a><a href="#c-02">02 Sidebar</a><a href="#c-03">03 Topbar</a><a href="#c-04">04 Breadcrumb</a><a href="#c-05">05 Page Header</a><a href="#c-06">06 Tabs</a><a href="#c-07">07 Pagination</a><a href="#c-08">08 Command Palette</a>
+    </div>
+  </details>
+  <details class="toc-grp">
+    <summary>폼 · 입력 <span class="cnt">12</span><span class="chev" aria-hidden="true">›</span></summary>
+    <div class="toc-links">
+      <a href="#c-09">09 Button</a><a href="#c-10">10 Text Field</a><a href="#c-11">11 Textarea</a><a href="#c-12">12 Select</a><a href="#c-13">13 Combobox</a><a href="#c-14">14 Date Picker</a><a href="#c-15">15 Checkbox</a><a href="#c-16">16 Radio</a><a href="#c-17">17 Switch</a><a href="#c-18">18 File Upload</a><a href="#c-19">19 Form Field</a><a href="#c-20">20 Slider</a>
+    </div>
+  </details>
+  <details class="toc-grp">
+    <summary>데이터 표시 <span class="cnt">12</span><span class="chev" aria-hidden="true">›</span></summary>
+    <div class="toc-links">
+      <a href="#c-21">21 Data Table</a><a href="#c-22">22 Card</a><a href="#c-23">23 Stat / KPI</a><a href="#c-24">24 Badge</a><a href="#c-25">25 Tag / Chip</a><a href="#c-26">26 Avatar</a><a href="#c-27">27 Description List</a><a href="#c-28">28 Tooltip</a><a href="#c-29">29 Charts</a><a href="#c-30">30 List</a><a href="#c-31">31 Tree</a><a href="#c-32">32 Filter Bar</a>
+    </div>
+  </details>
+  <details class="toc-grp">
+    <summary>피드백 · 오버레이 <span class="cnt">10</span><span class="chev" aria-hidden="true">›</span></summary>
+    <div class="toc-links">
+      <a href="#c-33">33 Modal</a><a href="#c-34">34 Drawer</a><a href="#c-35">35 Toast</a><a href="#c-36">36 Alert</a><a href="#c-37">37 Dropdown Menu</a><a href="#c-38">38 Progress</a><a href="#c-39">39 Skeleton</a><a href="#c-40">40 Empty State</a><a href="#c-41">41 Popover</a><a href="#c-42">42 Error State</a>
+    </div>
+  </details>
+  <details class="toc-grp">
+    <summary>유틸 · 어드민 <span class="cnt">4</span><span class="chev" aria-hidden="true">›</span></summary>
+    <div class="toc-links">
+      <a href="#c-43">43 Divider</a><a href="#c-44">44 Search Field</a><a href="#c-45">45 Permission Matrix</a><a href="#c-46">46 Timeline</a>
+    </div>
+  </details>
+  <p class="toc-empty">검색 결과가 없습니다.</p>
 </nav>
 
 <main class="demo-main" id="main">
   <section class="demo-hero">
     <h1>Console</h1>
-    <p class="sub">PC 어드민을 위한 독립 디자인 시스템. 깔끔하고, 밀도 높고, 일관된 콘솔. 이 페이지는 46개 컴포넌트를 라이브로 보여주는 카탈로그입니다 — 상단에서 <strong>테마</strong>·<strong>강조색</strong>·<strong>밀도</strong>를 바꿔 5색 × Light/Dark 10조합을 눈으로 검증하세요.</p>
+    <p class="sub">PC 어드민을 위한 독립 디자인 시스템. 깔끔하고, 밀도 높고, 일관된 콘솔. 이 페이지는 46개 컴포넌트를 라이브로 보여주는 카탈로그입니다 — 상단에서 <strong>테마</strong>·<strong>강조색</strong>·<strong>밀도</strong>를 바꿔 8색 × Light/Dark 16조합을 눈으로 검증하세요.</p>
     <div class="facts">
       <span class="ads-badge ads-badge-accent">46 컴포넌트</span>
       <span class="ads-badge ads-badge-neutral">3-tier 토큰</span>
-      <span class="ads-badge ads-badge-neutral">5색 × Light/Dark</span>
+      <span class="ads-badge ads-badge-neutral">8색 × Light/Dark</span>
       <span class="ads-badge ads-badge-success">WCAG 2.2 AA</span>
       <span class="ads-badge ads-badge-neutral">Vanilla HTML/CSS/JS</span>
+    </div>
+    <div style="margin-top:var(--space-500);display:flex;gap:var(--space-300);flex-wrap:wrap">
+      <a class="ads-btn ads-btn-primary" href="examples/dashboard.html">대시보드 예시 화면 보기 →</a>
+      <a class="ads-btn ads-btn-secondary" href="#foundation">파운데이션 살펴보기</a>
     </div>
   </section>
 
@@ -277,7 +321,7 @@
           <div class="ads-topbar-right">
             <button class="ads-icon-btn" aria-label="검색">⌕</button>
             <button class="ads-icon-btn" aria-label="알림">◔</button>
-            <button class="ads-icon-btn" aria-label="테마 전환" data-ads-theme="dark">☾</button>
+            <button class="ads-icon-btn" aria-label="테마 전환" data-ads-theme="toggle">☾</button>
             <button class="ads-avatar-btn" aria-haspopup="menu" aria-label="프로필"><span class="ads-avatar ads-avatar-sm">KD</span></button>
           </div>
         </div></header>

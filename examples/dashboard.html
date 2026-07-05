@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" data-accent="indigo" data-density="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대시보드 · Console Admin Design System</title>
+<meta name="description" content="Console ADS 화면 예시 — App Shell로 조립한 운영 대시보드(KPI · 차트 · 최근 활동).">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234A4FD1'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@2.304/web/jetbrains-mono.css">
+<link rel="stylesheet" href="../assets/css/foundation.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<style>
+/* === Page-specific layout chrome (token-only). Reuses ads-* components. === */
+.demo-skip{position:absolute;left:var(--space-300);top:-40px;z-index:var(--z-toast);padding:var(--space-200) var(--space-400);border-radius:var(--radius-md);background:var(--sys-accent-solid);color:var(--sys-accent-on-solid)}
+.demo-skip:focus{top:var(--space-300)}
+/* sidebar */
+.side-brand{display:flex;align-items:center;gap:var(--space-250);padding:var(--space-400) var(--space-400) var(--space-300)}
+.side-brand .mark{display:grid;place-items:center;width:28px;height:28px;border-radius:var(--radius-sm);background:var(--sys-accent-solid);color:var(--sys-accent-on-solid);font:var(--text-label-md)}
+.side-brand b{font:var(--text-heading-sm);color:var(--sys-content-primary)}
+.side-user{margin-top:auto;border-top:1px solid var(--sys-border-subtle);padding:var(--space-300)}
+.ads-sidebar{display:flex;flex-direction:column}
+/* topbar */
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:var(--space-200)}
+.mini-accent{display:inline-flex;gap:var(--space-100)}
+.mini-accent button{width:20px;height:20px;padding:0;border:2px solid transparent;border-radius:var(--radius-pill);background:none;cursor:pointer}
+.mini-accent button .d{display:block;width:100%;height:100%;border-radius:var(--radius-pill);box-shadow:inset 0 0 0 1px var(--sys-border-default)}
+.mini-accent button[aria-pressed="true"]{border-color:var(--sys-content-primary)}
+.mini-accent button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--sys-border-focus)}
+.d-indigo{background:var(--ref-indigo-600)}.d-blue{background:var(--ref-blue-600)}.d-teal{background:var(--ref-teal-600)}.d-green{background:var(--ref-green-600)}.d-amber{background:var(--ref-amber-500)}.d-rose{background:var(--ref-rose-500)}.d-violet{background:var(--ref-violet-600)}.d-neutral{background:var(--ref-neutral-800)}
+/* dashboard grids */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-400);margin-bottom:var(--space-500)}
+.dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:var(--space-400);margin-bottom:var(--space-500)}
+.dash-full{margin-bottom:var(--space-500)}
+/* donut */
+.donut-wrap{display:flex;align-items:center;gap:var(--space-600);flex-wrap:wrap}
+.donut{position:relative;width:148px;height:148px;border-radius:var(--radius-pill);flex:none;background:conic-gradient(var(--viz-1) 0 44%,var(--viz-2) 44% 70%,var(--viz-3) 70% 87%,var(--viz-8) 87% 100%)}
+.donut::after{content:"";position:absolute;inset:30px;border-radius:var(--radius-pill);background:var(--sys-background-surface)}
+.donut-total{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut-total b{font:var(--text-heading-md);color:var(--sys-content-primary);font-variant-numeric:tabular-nums}
+.donut-total span{font:var(--text-caption);color:var(--sys-content-tertiary)}
+.legend{display:flex;flex-direction:column;gap:var(--space-200);min-width:150px}
+.legend-row{display:flex;align-items:center;gap:var(--space-200);font:var(--text-body-sm);color:var(--sys-content-secondary)}
+.legend-row .sw{width:10px;height:10px;border-radius:var(--radius-xs);flex:none}
+.legend-row b{margin-left:auto;color:var(--sys-content-primary);font-variant-numeric:tabular-nums}
+.sw1{background:var(--viz-1)}.sw2{background:var(--viz-2)}.sw3{background:var(--viz-3)}.sw8{background:var(--viz-8)}
+/* labelled bar chart */
+.bars-x{display:flex;justify-content:space-between;margin-top:var(--space-200);font:var(--text-caption);color:var(--sys-content-tertiary)}
+@media (max-width:1100px){.kpi-row{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}}
+@media (max-width:720px){.kpi-row{grid-template-columns:1fr}.ads-sidebar{display:none}.ads-shell{display:block}}
+</style>
+</head>
+<body>
+<a class="demo-skip" href="#main">본문으로 건너뛰기</a>
+<div class="ads-shell">
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="ads-sidebar">
+    <div class="side-brand"><span class="mark">C</span><b>Console</b></div>
+    <nav class="ads-nav" aria-label="주요">
+      <p class="ads-nav-group">운영</p>
+      <a class="ads-nav-item is-active" href="#main" aria-current="page">
+        <svg class="ads-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</a>
+      <a class="ads-nav-item" href="#main">
+        <svg class="ads-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>주문</a>
+      <a class="ads-nav-item" href="#main">
+        <svg class="ads-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5"/><path d="M17 5.2a3 3 0 010 5.6"/></svg>회원</a>
+      <p class="ads-nav-group">분석</p>
+      <a class="ads-nav-item" href="#main">
+        <svg class="ads-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg>통계</a>
+      <p class="ads-nav-group">설정</p>
+      <a class="ads-nav-item" href="#main">
+        <svg class="ads-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>환경설정</a>
+    </nav>
+    <div class="side-user">
+      <div class="ads-profile"><span class="ads-avatar ads-avatar-sm">KD<span class="ads-avatar-status"></span></span><div class="ads-profile-text"><strong>김도현</strong><span>관리자</span></div></div>
+    </div>
+  </aside>
+
+  <!-- ===== Topbar ===== -->
+  <header class="ads-topbar">
+    <div class="ads-topbar-inner">
+      <nav class="ads-breadcrumb" aria-label="breadcrumb"><a href="../index.html">카탈로그</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">대시보드</span></nav>
+      <div class="top-actions">
+        <div class="ads-search" style="width:220px"><span class="ads-search-icon" aria-hidden="true">⌕</span><input class="ads-input ads-search-input" type="search" placeholder="검색" aria-label="검색"></div>
+        <span class="mini-accent" role="group" aria-label="강조색">
+          <button data-ads-accent="indigo" aria-label="Indigo"><span class="d d-indigo"></span></button>
+          <button data-ads-accent="blue" aria-label="Blue"><span class="d d-blue"></span></button>
+          <button data-ads-accent="teal" aria-label="Teal"><span class="d d-teal"></span></button>
+          <button data-ads-accent="green" aria-label="Green"><span class="d d-green"></span></button>
+          <button data-ads-accent="amber" aria-label="Amber"><span class="d d-amber"></span></button>
+          <button data-ads-accent="rose" aria-label="Rose"><span class="d d-rose"></span></button>
+          <button data-ads-accent="violet" aria-label="Violet"><span class="d d-violet"></span></button>
+          <button data-ads-accent="neutral" aria-label="Neutral"><span class="d d-neutral"></span></button>
+        </span>
+        <button class="ads-icon-btn" aria-label="테마 전환" data-ads-theme="toggle">☾</button>
+        <button class="ads-avatar-btn" aria-haspopup="menu" aria-label="프로필"><span class="ads-avatar ads-avatar-sm">KD</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <main class="ads-content" id="main">
+    <div class="ads-content-inner">
+
+      <div class="ads-page-header">
+        <div>
+          <h1 class="ads-page-title">대시보드</h1>
+          <p class="ads-page-desc">2026년 7월 운영 현황을 한눈에 확인합니다.</p>
+        </div>
+        <div class="ads-page-actions">
+          <div class="ads-select-wrap"><select class="ads-input ads-select" aria-label="기간"><option>이번 달</option><option>최근 7일</option><option>지난 달</option></select></div>
+          <button class="ads-btn ads-btn-secondary">내보내기</button>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <div class="kpi-row">
+        <section class="ads-card ads-stat"><p class="ads-stat-label">오늘 매출</p><p class="ads-stat-value">₩ 12,480,000</p><p class="ads-stat-delta is-up">▲ 8.2% <span>어제 대비</span></p></section>
+        <section class="ads-card ads-stat"><p class="ads-stat-label">신규 가입</p><p class="ads-stat-value">1,284</p><p class="ads-stat-delta is-up">▲ 4.1% <span>지난주 대비</span></p></section>
+        <section class="ads-card ads-stat"><p class="ads-stat-label">주문 건수</p><p class="ads-stat-value">3,902</p><p class="ads-stat-delta is-down">▼ 2.3% <span>어제 대비</span></p></section>
+        <section class="ads-card ads-stat"><p class="ads-stat-label">환불율</p><p class="ads-stat-value">1.8%</p><p class="ads-stat-delta is-up">▲ 0.2%p <span>주의</span></p></section>
+      </div>
+
+      <!-- charts -->
+      <div class="dash-grid">
+        <section class="ads-card">
+          <header class="ads-card-head"><h3 class="ads-card-title">월별 매출 추이</h3><span class="ads-badge ads-badge-success">상승세</span></header>
+          <div class="ads-card-body">
+            <figure class="ads-chart" role="img" aria-label="2월부터 7월까지 매출 추이, 상승세" style="border:none;padding:0;background:none">
+              <div class="ads-bars">
+                <span style="--h:38%"></span><span style="--h:52%"></span><span style="--h:47%"></span>
+                <span style="--h:66%"></span><span style="--h:74%"></span><span style="--h:92%"></span>
+              </div>
+              <div class="bars-x"><span>2월</span><span>3월</span><span>4월</span><span>5월</span><span>6월</span><span>7월</span></div>
+            </figure>
+          </div>
+        </section>
+        <section class="ads-card">
+          <header class="ads-card-head"><h3 class="ads-card-title">채널 비중</h3></header>
+          <div class="ads-card-body">
+            <div class="donut-wrap">
+              <div class="donut" role="img" aria-label="채널 비중: 웹 44%, 앱 26%, 제휴 17%, 기타 13%"><div class="donut-total"><b>8,204</b><span>주문</span></div></div>
+              <div class="legend">
+                <div class="legend-row"><span class="sw sw1"></span>웹 <b>44%</b></div>
+                <div class="legend-row"><span class="sw sw2"></span>앱 <b>26%</b></div>
+                <div class="legend-row"><span class="sw sw3"></span>제휴 <b>17%</b></div>
+                <div class="legend-row"><span class="sw sw8"></span>기타 <b>13%</b></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- recent activity -->
+      <section class="ads-card dash-full">
+        <header class="ads-card-head"><h3 class="ads-card-title">최근 주문</h3><a class="ads-btn ads-btn-ghost ads-btn-sm" href="#main">전체 보기</a></header>
+        <div class="ads-table-wrap" style="border:none;border-radius:0">
+          <table class="ads-table">
+            <thead><tr><th>주문번호</th><th>고객</th><th>상태</th><th>채널</th><th class="ads-num">금액</th><th class="ads-num">일시</th></tr></thead>
+            <tbody>
+              <tr><td>ORD-20260705-018</td><td><div class="ads-profile"><span class="ads-avatar ads-avatar-xs">이</span><span>이서연</span></div></td><td><span class="ads-badge ads-badge-success"><span class="ads-badge-dot"></span>결제완료</span></td><td>웹</td><td class="ads-num">128,000</td><td class="ads-num">13:42</td></tr>
+              <tr><td>ORD-20260705-017</td><td><div class="ads-profile"><span class="ads-avatar ads-avatar-xs">박</span><span>박준호</span></div></td><td><span class="ads-badge ads-badge-warning">배송준비</span></td><td>앱</td><td class="ads-num">54,900</td><td class="ads-num">13:31</td></tr>
+              <tr><td>ORD-20260705-016</td><td><div class="ads-profile"><span class="ads-avatar ads-avatar-xs">최</span><span>최유진</span></div></td><td><span class="ads-badge ads-badge-danger">결제실패</span></td><td>웹</td><td class="ads-num">312,000</td><td class="ads-num">13:20</td></tr>
+              <tr><td>ORD-20260705-015</td><td><div class="ads-profile"><span class="ads-avatar ads-avatar-xs">KD</span><span>김도현</span></div></td><td><span class="ads-badge ads-badge-success"><span class="ads-badge-dot"></span>결제완료</span></td><td>제휴</td><td class="ads-num">89,000</td><td class="ads-num">12:58</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <p style="font:var(--text-caption);color:var(--sys-content-tertiary);margin-top:var(--space-600)">이 화면은 Console ADS 컴포넌트(App Shell · Page Header · Stat · Card · Chart · Table · Badge · Avatar)를 조립한 예시입니다. 상단 색상 점과 ☾ 버튼으로 테마·강조색이 카탈로그와 동일하게 적용됩니다. · <a href="../index.html">← 카탈로그로 돌아가기</a></p>
+    </div>
+  </main>
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>
