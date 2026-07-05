@@ -368,18 +368,30 @@
     var byId = {};
     toc.querySelectorAll(".toc-links a").forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
     var sections = Object.keys(byId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
-    if ("IntersectionObserver" in window && sections.length) {
-      var current = null;
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (!en.isIntersecting) return;
-          var a = byId[en.target.id]; if (!a) return;
-          if (current) current.classList.remove("is-current");
-          a.classList.add("is-current"); current = a;
-          var grp = a.closest(".toc-grp"); if (grp && !grp.open) grp.open = true;
-        });
-      }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
-      sections.forEach(function (s) { io.observe(s); });
+    var currentLink = null;
+    function setCurrent(id) {
+      var a = id && byId[id]; if (!a || a === currentLink) return;
+      if (currentLink) currentLink.classList.remove("is-current");
+      a.classList.add("is-current"); currentLink = a;
+      var grp = a.closest(".toc-grp"); if (grp && !grp.open) grp.open = true;
+    }
+    // scrollspy: current = last section whose top has scrolled just below the sticky topbar
+    var topbarH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--layout-topbar-height")) || 56;
+    var ticking = false;
+    function updateSpy() {
+      ticking = false;
+      var line = topbarH + 88, id = null;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top <= line) id = sections[i].id; else break;
+      }
+      setCurrent(id);
+    }
+    if (sections.length) {
+      window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(updateSpy); } }, { passive: true });
+      toc.addEventListener("click", function (e) {  // highlight the clicked item immediately
+        var a = e.target.closest(".toc-links a"); if (a) setCurrent(a.getAttribute("href").slice(1));
+      });
+      updateSpy();
     }
   })();
 })();
